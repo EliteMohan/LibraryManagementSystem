@@ -134,8 +134,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                    Log.i("Info", "Hello ".concat(Email));
-                    Log.i("Info", "Your Password is ".concat(Pass));
+
                 }
             }
         });
