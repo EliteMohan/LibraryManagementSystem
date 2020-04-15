@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Simple Login App</string>
+    <string name="App_Title">Siddharth Library</string>
+    <string name="usernameTitle">Username</string>
+    <string name="usernameHint">Enter the Username</string>
+    <string name="passwordTitle">Password</string>
+    <string name="passwordHint">Enter the Password</string>
+    <string name="loginButton">Login</string>
+    <string name="forgot_passwordButton">FORGOT PASSWORD</string>
+    <string name="confirm_passwordHint">Confirm Password</string>
+    <string name="emailTitle">Email</string>
+    <string name="emailHint">Enter The Email</string>
+    <string name="phoneHint">phone</string>
+    <string name="roll_noHint">Roll No.</string>
+    <string name="signupBtn">SIGNUP</string>
+    <string name="linkToLoginBtn">Already Registered,Click Here To Login</string>
+    <string name="linkToSignUpText">Click Here To Signup</string>
+    <string name="getUsernameHint">Username</string>
+    <string name="college_logo">College Logo</string>
+    <string name="reset_my_password">Reset Password</string>
+    <string name="send">Send</string>
+    <string name="clickToLogin">Click To Login</string>
+    <string name="helloworld">HelloWorld</string>
+    <string name="logout">Logout</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="college">College</string>
+    <string name="sietk">SIETK</string>
+    <string name="sistk">SISTK</string>
+</resources>

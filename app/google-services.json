@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "142534332004",
+    "firebase_url": "https://loginandregister-5ad14.firebaseio.com",
+    "project_id": "loginandregister-5ad14",
+    "storage_bucket": "loginandregister-5ad14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142534332004:android:19e6d5e1a9e54abc55d971",
+        "android_client_info": {
+          "package_name": "android.com.mohan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142534332004-8t0pj73uk5pl9qfn04r9h848j74b187p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO3uxzl-dU4P5Gopi2Isr1pnKrKFRFbY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142534332004-8t0pj73uk5pl9qfn04r9h848j74b187p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
