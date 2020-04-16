@@ -39,7 +39,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private String userID;
+    private String userID,adminID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,15 +126,22 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
-                                        finish();
+                                        adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
+                                        if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
+                                            startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
+                                            finish();
+                                        }else{
+                                            startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
+                                            finish();
+                                        }
                                     } else {
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(LoginAndSignUpActivity.this,"User doesn't Exist".concat(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())),Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
-
+                    Log.i("Info", "Hello ".concat(Email));
+                    Log.i("Info", "Your Password is ".concat(Pass));
                 }
             }
         });

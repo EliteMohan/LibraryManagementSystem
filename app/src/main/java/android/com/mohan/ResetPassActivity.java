@@ -45,6 +45,7 @@ public class ResetPassActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(ResetPassActivity.this, "We send you an e-mail", Toast.LENGTH_SHORT).show();
+                                    login.performClick();
 
                                 } else {
                                     Toast.makeText(ResetPassActivity.this, "Error", Toast.LENGTH_SHORT).show();
