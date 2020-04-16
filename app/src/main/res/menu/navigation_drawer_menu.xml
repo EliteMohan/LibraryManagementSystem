@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_user">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account"
+            android:title="@string/account"/>
+        <item android:id="@+id/nav_library_books"
+            android:icon="@drawable/ic_library_books"
+            android:title="@string/library"/>
+        <item android:id="@+id/nav_my_books"
+            android:icon="@drawable/ic_local_library"
+            android:title="@string/my_books"/>
+        <item android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+    </group>
+
+</menu>

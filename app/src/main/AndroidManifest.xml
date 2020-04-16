@@ -12,8 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AdminActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ResetPassActivity" />
-        <activity android:name=".UserActivity" />
+        <activity android:name=".UserActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">

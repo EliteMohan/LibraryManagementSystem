@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,10 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+import com.google.android.material.textfield.TextInputEditText;
 public class LoginAndSignUpActivity extends AppCompatActivity {
-    private EditText getPassword, getEmail,getUser,getConfirmPass,getPhone,getRollNo;
-    private EditText email, password;
+
+    private TextInputEditText getPassword, getEmail,getUser,getConfirmPass,getPhone,getRollNo;
+    private TextInputEditText email, password;
     private Button login, forgot_pass, linkToSignUp, signUp, linkToLogin;
     private TextView title,passTitle,emailTitle,title1;
     private ImageView clgLoginLogo,clgSignUpLogo;
@@ -39,7 +41,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private String userID;
+    private String userID,adminID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +110,8 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Email = email.getText().toString();
-                String Pass = password.getText().toString();
+                String Email = Objects.requireNonNull(email.getText()).toString();
+                String Pass = Objects.requireNonNull(password.getText()).toString();
                 boolean isLoginFieldsEmpty = TextUtils.isEmpty(Email) || TextUtils.isEmpty(Pass);
                 if (isLoginFieldsEmpty) {
                     Log.i("Info", "Please enter your username and password");
@@ -126,15 +128,20 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
-                                        finish();
+                                        adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
+                                        if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
+                                            startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
+                                            finish();
+                                        }else{
+                                            startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
+                                            finish();
+                                        }
                                     } else {
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(LoginAndSignUpActivity.this,"User doesn't Exist".concat(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())),Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
-
                 }
             }
         });
@@ -202,12 +209,12 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String user,pass,Email,confirmPass,phone,rollno,gender,college;
-                pass = getPassword.getText().toString();
-                Email = getEmail.getText().toString();
-                user = getUser.getText().toString();
-                confirmPass = getConfirmPass.getText().toString();
-                phone = getPhone.getText().toString();
-                rollno = getRollNo.getText().toString();
+                pass = Objects.requireNonNull(getPassword.getText()).toString();
+                Email = Objects.requireNonNull(getEmail.getText()).toString();
+                user = Objects.requireNonNull(getUser.getText()).toString();
+                confirmPass = Objects.requireNonNull(getConfirmPass.getText()).toString();
+                phone = Objects.requireNonNull(getPhone.getText()).toString();
+                rollno = Objects.requireNonNull(getRollNo.getText()).toString();
 
                 int selectedGenderID = genderRadioGroup.getCheckedRadioButtonId();
                 int selectedCollegeID = collegeRadioGroup.getCheckedRadioButtonId();
@@ -290,7 +297,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         forgot_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Info", "Hello ".concat(email.getText().toString()));
+                Log.i("Info", "Hello ".concat(Objects.requireNonNull(email.getText()).toString()));
                 Log.i("Info", "Forgot your password?");
                 startActivity(new Intent(LoginAndSignUpActivity.this,ResetPassActivity.class));
                 Toast.makeText(getApplicationContext(), "Forgot Your Password", Toast.LENGTH_SHORT).show();
