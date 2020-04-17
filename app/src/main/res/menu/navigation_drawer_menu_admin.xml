@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation view">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_account"
+        <item android:id="@+id/nav_account_admin"
             android:icon="@drawable/ic_account"
             android:title="@string/account"/>
-        <item android:id="@+id/nav_library_books"
+        <item android:id="@+id/nav_library_books_admin"
             android:icon="@drawable/ic_library_books"
             android:title="@string/library"/>
-        <item android:id="@+id/nav_users"
+        <item android:id="@+id/nav_users_admin"
             android:icon="@drawable/ic_profile"
             android:title="@string/users"/>
-        <item android:id="@+id/nav_settings"
+        <item android:id="@+id/nav_settings_admin"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
     </group>

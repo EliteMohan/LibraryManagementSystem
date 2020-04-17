@@ -39,4 +39,26 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="welcome_to_library_app">Welcome to Library</string>
     <string name="users">Users</string>
+    <string name="userimageicon">userImageIcon</string>
+    <string name="userupdatename">userUpdateName</string>
+    <string name="name">Name</string>
+    <string name="roll_number">Roll Number</string>
+    <string name="search">Search</string>
+    <string name="view_all_books">View All Books</string>
+    <string name="feedback_about_book">Feedback About Book</string>
+    <string name="recommend_new_book">Recommend New Book</string>
+    <string name="view_books_requested">View Books Requested</string>
+    <string name="view_books_recieved">View Books Received</string>
+    <string name="total_fine_amount">Total Fine Amount</string>
+    <string name="all_books_return_date">All Books Return Date</string>
+    <string name="feedback">Feedback</string>
+    <string name="about_us">About Us</string>
+    <string name="from_siddharth_library">From Siddharth Library</string>
+    <string name="add_book">Add Book</string>
+    <string name="remove_book">Remove Book</string>
+    <string name="remaining_books">Remaining Books</string>
+    <string name="book_request_from_users">Book Request From Users</string>
+    <string name="view_all_users">View All Users</string>
+    <string name="books_recieved_users">Books Received Users</string>
+    <string name="delete_user_accounts">Delete User Accounts</string>
 </resources>
