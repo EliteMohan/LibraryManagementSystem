@@ -65,25 +65,32 @@
         android:text="@string/passwordTitle"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/passwordLoginID"
+        app:layout_constraintBottom_toTopOf="@+id/passIN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLoginID" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/passwordLoginID"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="1dp"
+        android:id="@+id/passIN"
         android:ems="10"
-        android:hint="@string/passwordTitle"
-        android:inputType="textPassword"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordTitle" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordLoginID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/passwordTitle"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/loginButton"
@@ -100,7 +107,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ForgotPassButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLoginID" />
+        app:layout_constraintTop_toBottomOf="@+id/passIN" />
 
     <Button
         android:id="@+id/ForgotPassButton"
@@ -178,20 +185,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_1" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/passwordSignUpID"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="17dp"
+        android:id="@+id/passSignUP"
         android:ems="10"
-        android:hint="@string/passwordTitle"
-        android:inputType="textPassword"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserNameSignUpID" />
+        app:layout_constraintTop_toBottomOf="@+id/UserNameSignUpID">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordSignUpID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/passwordTitle"
+            android:inputType="textPassword"
+            android:visibility="gone"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/confirmPassID"
@@ -205,7 +219,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordSignUpID"
+        app:layout_constraintTop_toBottomOf="@+id/passSignUP"
         tools:visibility="gone" />
 
     <com.google.android.material.textfield.TextInputEditText

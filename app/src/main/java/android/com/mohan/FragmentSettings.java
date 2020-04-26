@@ -24,10 +24,15 @@ public class FragmentSettings extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(getActivity(),"Logout Successful",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(),LoginAndSignUpActivity.class));
-                Objects.requireNonNull(getActivity()).finish();
+                try {
+                    FirebaseAuth.getInstance().signOut();
+                    Toast.makeText(getActivity(),"Logout Successful",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(),LoginAndSignUpActivity.class));
+                    Objects.requireNonNull(getActivity()).finish();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         return view;

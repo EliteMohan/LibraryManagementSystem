@@ -21,7 +21,7 @@
             android:src="@drawable/ic_add_book"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -46,7 +46,7 @@
             android:src="@drawable/ic_all_book"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
             android:src="@drawable/ic_remove_book"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -98,7 +98,7 @@
             android:src="@drawable/ic_remaining_books"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

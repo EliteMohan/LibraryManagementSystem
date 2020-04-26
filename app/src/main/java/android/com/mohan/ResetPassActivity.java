@@ -3,6 +3,7 @@ package android.com.mohan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,15 +18,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPassActivity extends AppCompatActivity {
     private EditText inputEmail;
-    private Button btnReset,login;
+    private Button login;
     private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_pass);
-
         inputEmail = findViewById(R.id.emailReset);
-        btnReset = findViewById(R.id.btn_reset_password);
+        Button btnReset = findViewById(R.id.btn_reset_password);
         login = findViewById(R.id.btn_login);
         auth = FirebaseAuth.getInstance();
 
@@ -39,19 +39,23 @@ public class ResetPassActivity extends AppCompatActivity {
                     return;
                 }
 
-                auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ResetPassActivity.this, "We send you an e-mail", Toast.LENGTH_SHORT).show();
-                                    login.performClick();
+                try {
+                    auth.sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(ResetPassActivity.this, "We send you an e-mail", Toast.LENGTH_SHORT).show();
+                                        login.performClick();
 
-                                } else {
-                                    Toast.makeText(ResetPassActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ResetPassActivity.this, "Please ensure you  college mail", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
             }
         });
         login.setOnClickListener(new View.OnClickListener() {

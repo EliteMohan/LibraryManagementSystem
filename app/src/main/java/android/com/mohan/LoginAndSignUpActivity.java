@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import com.google.android.material.textfield.TextInputEditText;
 public class LoginAndSignUpActivity extends AppCompatActivity {
-
+    private TextInputLayout passLogIN, passSignUP;
     private TextInputEditText getPassword, getEmail,getUser,getConfirmPass,getPhone,getRollNo;
     private TextInputEditText email, password;
     private Button login, forgot_pass, linkToSignUp, signUp, linkToLogin;
@@ -53,7 +54,8 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         getPhone = findViewById(R.id.phoneID);
         getUser = findViewById(R.id.UserNameSignUpID);
         getRollNo = findViewById(R.id.rollNoID);
-
+        passLogIN = findViewById(R.id.passIN);
+        passSignUP = findViewById(R.id.passSignUP);
         //Text Views
         emailTitle = findViewById(R.id.emailTitle);
         passTitle = findViewById(R.id.passwordTitle);
@@ -83,6 +85,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
 
         //Making Sign-up fields invisible
         getPassword.setVisibility(View.GONE);
+        passSignUP.setVisibility(View.GONE);
         getEmail.setVisibility(View.GONE);
         signUp.setVisibility(View.GONE);
         linkToLogin.setVisibility(View.GONE);
@@ -100,8 +103,14 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
 
         //check user logged in or not
         if(firebaseAuth.getCurrentUser()!=null){
-            startActivity(new Intent(getApplicationContext(),UserActivity.class));
-            finish();
+            adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
+            if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
+                startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
+                finish();
+            }else{
+                startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
+                finish();
+            }
         }
 
         //Login Listener
@@ -152,6 +161,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 emailTitle.setVisibility(View.GONE);
                 email.setVisibility(View.GONE);
                 passTitle.setVisibility(View.GONE);
+                passLogIN.setVisibility(View.GONE);
                 password.setVisibility(View.GONE);
                 login.setVisibility(View.GONE);
                 linkToSignUp.setVisibility(View.GONE);
@@ -161,6 +171,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 genderRadioGroup.setVisibility(View.VISIBLE);
                 collegeRadioGroup.setVisibility(View.VISIBLE);
                 getPassword.setVisibility(View.VISIBLE);
+                passSignUP.setVisibility(View.VISIBLE);
                 getEmail.setVisibility(View.VISIBLE);
                 signUp.setVisibility(View.VISIBLE);
                 linkToLogin.setVisibility(View.VISIBLE);
@@ -181,6 +192,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 genderRadioGroup.setVisibility(View.GONE);
                 collegeRadioGroup.setVisibility(View.GONE);
                 getPassword.setVisibility(View.GONE);
+                passSignUP.setVisibility(View.GONE);
                 getEmail.setVisibility(View.GONE);
                 signUp.setVisibility(View.GONE);
                 linkToLogin.setVisibility(View.GONE);
@@ -195,6 +207,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 emailTitle.setVisibility(View.VISIBLE);
                 email.setVisibility(View.VISIBLE);
                 passTitle.setVisibility(View.VISIBLE);
+                passLogIN.setVisibility(View.VISIBLE);
                 password.setVisibility(View.VISIBLE);
                 login.setVisibility(View.VISIBLE);
                 linkToSignUp.setVisibility(View.VISIBLE);
@@ -255,7 +268,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
-                                userID = firebaseAuth.getCurrentUser().getUid();//getting current userID required to create user profile
+                                userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting current userID required to create user profile
                                 //creating collection(database) users with document(tables) userID
                                 DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
                                 //Creating and Storing data as key/value pairs
@@ -267,6 +280,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                                 User.put("gender",gender);
                                 User.put("college",college);
                                 //success and failure listeners
+                                //adds user data
                                 documentReference.set(User).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
