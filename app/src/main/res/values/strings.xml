@@ -80,4 +80,13 @@
     <string name="send_request">Send Request</string>
     <string name="search_with_abbreviation">Search with Abbreviation</string>
     <string name="name_1">Name:</string>
+    <string name="search_with_roll_no">Search with Roll No.</string>
+    <string name="requested_date">Requested Date:</string>
+    <string name="date">Date</string>
+    <string name="username">Username:</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="delete_request">Delete Request</string>
+    <string name="accept_request">Accept Request</string>
+    <string name="receive">Receive</string>
+    <string name="received_date">Received Date:</string>
 </resources>

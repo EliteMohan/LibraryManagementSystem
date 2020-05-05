@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,8 +40,8 @@ public class FragmentSearchBook extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference docRef;
     private EditText searchField;
+    private ProgressBar progressBar;
     private MaterialTextView bookName, bookAbbr, bookAuthor, bookEdition, bookISBNCode;
-    private AppCompatButton sendRequest;
     private String ReqRecColID = "REQREC";
     private String UsersID = "users";
 
@@ -57,10 +58,14 @@ public class FragmentSearchBook extends Fragment {
         bookISBNCode = view.findViewById(R.id.bookISBN_from_firestore);
         //Buttons
         AppCompatButton searchButton = view.findViewById(R.id.Search_Book_Button);
-        sendRequest = view.findViewById(R.id.send_book_request);
+        AppCompatButton sendRequest = view.findViewById(R.id.send_book_request);
         //searchfield
         searchField = view.findViewById(R.id.Search_Book);
+        //booksmodel object creation
         booksModel = new BooksModel();
+        //progress bar
+        progressBar = view.findViewById(R.id.progressBarSend);
+        progressBar.setVisibility(View.GONE);
         //firestore Instances
         firebaseFirestore = FirebaseFirestore.getInstance();
         //Read Data From Firestore
@@ -73,8 +78,8 @@ public class FragmentSearchBook extends Fragment {
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(getActivity(), "Searching...", Toast.LENGTH_SHORT).show();
-                    booksModel.setBookAbbr(searchField.getText().toString());
+                    progressBar.setVisibility(View.VISIBLE);
+                    booksModel.setBookAbbr(Objects.requireNonNull(searchField.getText()).toString());
                     try {
                         docRef = firebaseFirestore.collection("Books").document(booksModel.getBookAbbr().toUpperCase());
                     } catch (IllegalArgumentException e) {
@@ -87,6 +92,7 @@ public class FragmentSearchBook extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
+                                            progressBar.setVisibility(View.GONE);
                                             DocumentSnapshot doc = task.getResult();
                                             assert doc != null;
                                             if (doc.exists() && Objects.equals(doc.get("Book Req Code"), "1")) {
@@ -117,36 +123,18 @@ public class FragmentSearchBook extends Fragment {
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                    sendRequestOperations();
                 }
             });
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-
-        return view;
-    }
-
-    private Map<String, Object> ReqRecData(String Username, String Rollno, String BookReqRecDate) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Username", Username);
-        data.put("Rollno", Rollno);
-        data.put("Bookname", booksModel.getBookName());
-        data.put("Bookauthor", booksModel.getBookAuthor());
-        data.put("Bookedition", booksModel.getBookEdition());
-        data.put("Bookreqrecdate", BookReqRecDate);
-        data.put("RecCode", "1");
-        return data;
-    }
-
-    private void sendRequestOperations() {
         try {
             sendRequest.setOnClickListener(new View.OnClickListener() {
                 String RollNo, Username;
 
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Sending Request...", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.VISIBLE);
 //                    dateStr = df.format(new Date());
                     FirebaseAuth fAuth = FirebaseAuth.getInstance();
                     String userID;
@@ -160,13 +148,14 @@ public class FragmentSearchBook extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
+                                progressBar.setVisibility(View.GONE);
                                 DocumentSnapshot doc = task.getResult();
                                 assert doc != null;
                                 if (doc.exists()) {
                                     Log.d(TAG, String.valueOf(doc.getData()));
                                     RollNo = doc.getString("rollno");
                                     Username = doc.getString("username");
-                                    recursiveRequestCreator(RollNo,Username,recursionLimit);
+                                    recursiveRequestCreator(RollNo, Username, recursionLimit);
                                 }
                             }
                         }
@@ -176,11 +165,29 @@ public class FragmentSearchBook extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        return view;
     }
+
+    private Map<String, Object> ReqRecData(String Username, String Rollno, String BookReqRecDate) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Username", Username);
+        data.put("Rollno", Rollno);
+        data.put("Bookname", booksModel.getBookName());
+        data.put("Bookauthor", booksModel.getBookAuthor());
+        data.put("Bookedition", booksModel.getBookEdition());
+        data.put("Bookreqrecdate", BookReqRecDate);
+        data.put("RecCode", "1");
+        data.put("Abbr",booksModel.getBookAbbr());
+        return data;
+    }
+
     private int recursionLimit = 1;
-    private void recursiveRequestCreator(final String RollNo, final String Username, final int recursionLimit){
-        if(recursionLimit <=5) {
-            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
+
+    private void recursiveRequestCreator(final String RollNo, final String Username, final int recursionLimit) {
+        if (recursionLimit <= 3) {
+            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
             docRef = firebaseFirestore.collection(ReqRecColID).document(RollNo);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -189,11 +196,11 @@ public class FragmentSearchBook extends Fragment {
                         DocumentSnapshot doc = task.getResult();
                         assert doc != null;
                         if (doc.exists()) {
-                            if((Objects.equals(doc.getString("Bookname"), booksModel.getBookName())
+                            if ((Objects.equals(doc.getString("Bookname"), booksModel.getBookName())
                                     || Objects.equals(doc.getString("Bookauthor"), booksModel.getBookAuthor()))
-                                    && Objects.equals(doc.getString("Bookedition"), booksModel.getBookEdition())){
-                                Toast.makeText(getActivity(),"This book("+doc.getString("Bookname")+") request sent already",Toast.LENGTH_SHORT).show();
-                            }else {
+                                    && Objects.equals(doc.getString("Bookedition"), booksModel.getBookEdition())) {
+                                Toast.makeText(getActivity(), "This book(" + doc.getString("Bookname") + ") request sent already", Toast.LENGTH_SHORT).show();
+                            } else {
                                 int Limit = recursionLimit;
                                 Limit++;
                                 Log.d(TAG, "book requests exists for " + RollNo);
@@ -208,7 +215,7 @@ public class FragmentSearchBook extends Fragment {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "Request for " + RollNo + " added successfully");
-                                    Toast.makeText(getActivity(),"Request Sent Successfully for "+booksModel.getBookName(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Request Sent Successfully for " + booksModel.getBookName(), Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -221,7 +228,7 @@ public class FragmentSearchBook extends Fragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(),"Book Request Limit Reached",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Book Request Limit Reached", Toast.LENGTH_SHORT).show();
         }
     }
 
