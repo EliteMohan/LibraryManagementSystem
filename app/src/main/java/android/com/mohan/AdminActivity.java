@@ -60,8 +60,16 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     assert documentSnapshot != null;
-                    headerUsername.setText(documentSnapshot.getString("username"));
-                    headerRollNo.setText(documentSnapshot.getString("rollno"));
+                    try {
+                        headerUsername.setText(documentSnapshot.getString("username"));
+                    } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        headerRollNo.setText(documentSnapshot.getString("rollno"));
+                    } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             });
         } catch (NullPointerException e) {
