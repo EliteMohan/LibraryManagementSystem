@@ -17,6 +17,8 @@ public class FragmentMyBooksUsers extends Fragment {
         View view = inflater.inflate(R.layout.fragments_mybooks_user,container,false);
         LinearLayoutCompat viewBooksRequested = view.findViewById(R.id.fragmentPartMyBooksUserOne);
         LinearLayoutCompat viewBooksReceived = view.findViewById(R.id.fragmentPartMyBooksUserTwo);
+        LinearLayoutCompat allBooksRetDate = view.findViewById(R.id.fragmentPartMyBooksFour);
+
         viewBooksRequested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +37,17 @@ public class FragmentMyBooksUsers extends Fragment {
                 assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragmentBooksReceived);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        allBooksRetDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentBooksReturnDates booksReturnDates = new FragmentBooksReturnDates();
+                assert getFragmentManager() != null;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,booksReturnDates);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

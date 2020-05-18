@@ -2,12 +2,14 @@ package android.com.mohan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -41,10 +44,15 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private String userID,adminID;
+    private Map<String,Object> User;
+    private SharedPreferences sharedPref;
+    private String user,pass,Email,confirmPass,phone,rollno,gender,college;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginandsignup);
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
         //Text Fields
         password = findViewById(R.id.passwordLoginID);
         getPassword = findViewById(R.id.passwordSignUpID);
@@ -104,7 +112,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         //check user logged in or not
         if(firebaseAuth.getCurrentUser()!=null){
             adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
-            if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
+            if(adminID.equals("OAb5ZYnZVnPeL6KP3MsFLf9ch7j2")){
                 startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
                 finish();
             }else{
@@ -117,7 +125,7 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Email = Objects.requireNonNull(email.getText()).toString();
+                final String Email = Objects.requireNonNull(email.getText()).toString();
                 String Pass = Objects.requireNonNull(password.getText()).toString();
                 boolean isLoginFieldsEmpty = TextUtils.isEmpty(Email) || TextUtils.isEmpty(Pass);
                 if (isLoginFieldsEmpty) {
@@ -126,6 +134,11 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                     if(TextUtils.isEmpty(Pass))password.setError("password is missing");
                     Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
                 } else {
+                    try {
+                        hideSoftKeyboard(Objects.requireNonNull(v));
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
                     progressBar.setVisibility(View.VISIBLE);
                     //method to sign-in into user account
                     firebaseAuth.signInWithEmailAndPassword(Email,Pass)
@@ -134,14 +147,76 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
-                                        if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
-                                            startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
-                                            finish();
-                                        }else{
-                                            startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
-                                            finish();
+                                        if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                                            userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting current userID required to create user profile
+                                            //Creating and Storing data as key/value pairs
+                                            User = new HashMap<>();
+                                            User.put("username",sharedPref.getString("username",user));
+                                            User.put("email",sharedPref.getString("email",Email));
+                                            User.put("phone",sharedPref.getString("phone",phone));
+                                            User.put("rollno",sharedPref.getString("rollno",rollno));
+                                            User.put("gender",sharedPref.getString("gender",gender));
+                                            User.put("college",sharedPref.getString("college",college));
+                                            //creating collection(database) users with document(tables) userID if doesnt exists
+                                            final DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                                            try {
+                                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if(task.isSuccessful()){
+                                                            DocumentSnapshot doc = task.getResult();
+                                                            assert doc != null;
+                                                            if(doc.exists()){
+                                                                Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                                                try {
+                                                                    adminID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting adminID to log into admin profile
+                                                                }catch (NullPointerException n){
+                                                                    Log.d("Error:", Objects.requireNonNull(n.getMessage()));
+                                                                }
+//                                                                Log.d("Admin ID: ",adminID);
+                                                                if(adminID.equals("OAb5ZYnZVnPeL6KP3MsFLf9ch7j2")){
+                                                                    startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
+                                                                    finish();
+                                                                }else{
+                                                                    startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
+                                                                    finish();
+                                                                }
+                                                            }else {
+                                                                //success and failure listeners
+                                                                //adds user data
+                                                                try {
+                                                                    documentReference.set(User).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+                                                                            Log.d("userInfo","User data Successfully added to user ".concat(userID));
+                                                                            Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                                                            adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
+                                                                            if(adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")){
+                                                                                startActivity(new Intent(LoginAndSignUpActivity.this,AdminActivity.class));
+                                                                                finish();
+                                                                            }else{
+                                                                                startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
+                                                                                finish();
+                                                                            }
+                                                                        }
+                                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            Log.d("ErrorInfo","onFailure ".concat(e.toString()));
+                                                                        }
+                                                                    });
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            Toast.makeText(LoginAndSignUpActivity.this,"Please verify your Email",Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
                                         progressBar.setVisibility(View.GONE);
@@ -219,7 +294,6 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String user,pass,Email,confirmPass,phone,rollno,gender,college;
                 pass = Objects.requireNonNull(getPassword.getText()).toString();
                 Email = Objects.requireNonNull(getEmail.getText()).toString();
                 user = Objects.requireNonNull(getUser.getText()).toString();
@@ -268,33 +342,27 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
-                                userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting current userID required to create user profile
-                                //creating collection(database) users with document(tables) userID
-                                DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                                //Creating and Storing data as key/value pairs
-                                Map<String,Object> User = new HashMap<>();
-                                User.put("username",user);
-                                User.put("email",Email);
-                                User.put("phone",phone);
-                                User.put("rollno",rollno);
-                                User.put("gender",gender);
-                                User.put("college",college);
-                                //success and failure listeners
-                                //adds user data
-                                documentReference.set(User).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("userInfo","User data Successfully added to user ".concat(userID));
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "SignUp Successful", Toast.LENGTH_SHORT).show();
-                                        linkToLogin.performClick();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d("ErrorInfo","onFailure ".concat(e.toString()));
-                                    }
-                                });
+                                firebaseAuth.getCurrentUser().sendEmailVerification()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(LoginAndSignUpActivity.this,"Registration Successful, Please Check your Email",Toast.LENGTH_SHORT).show();
+                                                    progressBar.setVisibility(View.GONE);
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString("username",user);
+                                                    editor.putString("email",Email);
+                                                    editor.putString("phone",phone);
+                                                    editor.putString("rollno",rollno);
+                                                    editor.putString("gender",gender);
+                                                    editor.putString("college",college);
+                                                    editor.apply();
+                                                    Toast.makeText(getApplicationContext(), "SignUp Successful", Toast.LENGTH_SHORT).show();
+                                                    linkToLogin.performClick();
+
+                                                }
+                                            }
+                                        });
                                 //startActivity(new Intent(LoginAndSignUpActivity.this,UserActivity.class));
                             }else{
                                 progressBar.setVisibility(View.GONE);
@@ -315,5 +383,12 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Forgot Your Password", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void hideSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        assert inputMethodManager != null;
+        inputMethodManager.hideSoftInputFromWindow(
+               view.getWindowToken(), 0);
     }
 }

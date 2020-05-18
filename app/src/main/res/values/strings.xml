@@ -89,4 +89,17 @@
     <string name="accept_request">Accept Request</string>
     <string name="receive">Receive</string>
     <string name="received_date">Received Date:</string>
+    <string name="reset">reset</string>
+    <string name="verify">verify</string>
+    <string name="to">To:</string>
+    <string name="message">Message:</string>
+    <string name="subject">Subject:</string>
+    <string name="devMail">mohanreddyhitman@gmail.com</string>
+    <string name="copies">Copies</string>
+    <string name="availability">Availability:</string>
+    <string name="books_available">books available</string>
+    <string name="return_date">Return Date:</string>
+    <string name="book_1">Book 1</string>
+    <string name="book_2">Book 2</string>
+    <string name="search_here">Search here</string>
 </resources>

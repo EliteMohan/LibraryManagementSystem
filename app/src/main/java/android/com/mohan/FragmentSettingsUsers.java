@@ -1,4 +1,5 @@
 package android.com.mohan;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,12 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class FragmentSettings extends Fragment {
+public class FragmentSettingsUsers extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_settings,container,false);
-        View view =  inflater.inflate(R.layout.fragment_settings,container,false);
+        View view =  inflater.inflate(R.layout.fragment_settings_users,container,false);
         LinearLayoutCompat feedback = view.findViewById(R.id.fragmentPartSettingsUserOne);
         TextView logout = view.findViewById(R.id.logoutID);
         feedback.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +31,7 @@ public class FragmentSettings extends Fragment {
                 FragmentEmailFeedback emailFeedback = new FragmentEmailFeedback();
                 assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container_admin,emailFeedback);
+                transaction.replace(R.id.fragment_container,emailFeedback);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

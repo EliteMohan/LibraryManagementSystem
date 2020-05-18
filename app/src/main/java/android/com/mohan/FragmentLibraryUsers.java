@@ -18,6 +18,7 @@ public class FragmentLibraryUsers extends Fragment {
         View view = inflater.inflate(R.layout.fragment_library_users,container,false);
 //        TextView search = view.findViewById(R.id.search_bookID);
         LinearLayoutCompat search = view.findViewById(R.id.fragmentPartLibOne);
+        LinearLayoutCompat viewallbooks = view.findViewById(R.id.fragmentPartLibTwo);
         //changes fragment layout
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,6 +27,17 @@ public class FragmentLibraryUsers extends Fragment {
                 assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,searchBook);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        viewallbooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentViewAllBooks viewAllBooks = new FragmentViewAllBooks();
+                assert getFragmentManager() != null;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,viewAllBooks);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

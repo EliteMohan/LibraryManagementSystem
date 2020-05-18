@@ -1,5 +1,8 @@
 package android.com.mohan;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class BookReqRecModel {
     private String bookName;
     private String bookAuthor;
@@ -9,6 +12,24 @@ public class BookReqRecModel {
     private String recCode;
     private String userName;
     private String rollNo;
+    private int copies;
+    private String retDate;
+
+    String getRetDate() {
+        return retDate;
+    }
+
+    void setRetDate(String retDate) {
+        this.retDate = retDate;
+    }
+
+    int getCopies() {
+        return copies;
+    }
+
+    void setCopies(Integer copies) {
+        this.copies = copies;
+    }
 
     BookReqRecModel(String bookName, String bookAuthor, String bookEdition, String bookReqRecDate, String recCode, String userName, String rollNo, String bookAbbr) {
         this.bookName = bookName;

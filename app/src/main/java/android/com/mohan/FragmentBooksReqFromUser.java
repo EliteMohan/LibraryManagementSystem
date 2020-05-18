@@ -3,6 +3,7 @@ package android.com.mohan;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -38,7 +41,8 @@ public class FragmentBooksReqFromUser extends Fragment {
     private DocumentReference docRef;
     private EditText searchField;
     private ProgressBar progressBar;
-    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username,rollno;
+    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username, rollno;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +69,11 @@ public class FragmentBooksReqFromUser extends Fragment {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.isEmpty(searchField.getText().toString())) {
+                        Toast.makeText(getActivity(), "field is empty", Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     try {
                         hideSoftKeyboard(Objects.requireNonNull(getActivity()));
                     } catch (NullPointerException e) {
@@ -74,7 +83,7 @@ public class FragmentBooksReqFromUser extends Fragment {
                     progressBar.setVisibility(View.VISIBLE);
                     bookReqRecModel.setRollNo(Objects.requireNonNull(searchField.getText()).toString());
                     try {
-                        Log.d(TAG,bookReqRecModel.getRollNo().toUpperCase());
+                        Log.d(TAG, bookReqRecModel.getRollNo().toUpperCase());
                         docRef = firebaseFirestore.collection("REQREC").document(bookReqRecModel.getRollNo().toUpperCase());
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();
@@ -85,11 +94,11 @@ public class FragmentBooksReqFromUser extends Fragment {
                                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             progressBar.setVisibility(View.GONE);
                                             DocumentSnapshot doc = task.getResult();
                                             assert doc != null;
-                                            if(doc.exists() && Objects.equals(doc.get("RecCode"), "1")){
+                                            if (doc.exists() && Objects.equals(doc.get("RecCode"), "1")) {
                                                 bookReqRecModel.setBookName(String.valueOf(doc.get("Bookname")));
                                                 bookReqRecModel.setBookAuthor(String.valueOf(doc.get("Bookauthor")));
                                                 bookReqRecModel.setBookEdition(String.valueOf(doc.get("Bookedition")));
@@ -97,18 +106,30 @@ public class FragmentBooksReqFromUser extends Fragment {
                                                 bookReqRecModel.setUserName(String.valueOf(doc.get("Username")));
                                                 bookReqRecModel.setBookReqRecDate(String.valueOf(doc.get("Bookreqrecdate")));
                                                 bookReqRecModel.setBookAbbr(String.valueOf(doc.get("Abbr")));
-                                                Toast.makeText(getActivity(),"Your Requested Book",Toast.LENGTH_SHORT).show();
+                                                try {
+                                                    bookReqRecModel.setCopies(Objects.requireNonNull(doc.getLong("Copies")).intValue());
+                                                } catch (NullPointerException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                Toast.makeText(getActivity(), "Your Requested Book", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Log.d(TAG, String.valueOf(doc.getData()));
-                                                bookReqRecModel.setBookReqRecDate(null);
-                                                bookReqRecModel.setUserName(null);
-                                                bookReqRecModel.setRollNo(null);
-                                                bookReqRecModel.setBookEdition(null);
-                                                bookReqRecModel.setBookAuthor(null);
-                                                bookReqRecModel.setBookName(null);
+                                                try {
+                                                    bookReqRecModel.setBookReqRecDate(null);
+                                                    bookReqRecModel.setUserName(null);
+                                                    bookReqRecModel.setRollNo(null);
+                                                    bookReqRecModel.setBookEdition(null);
+                                                    bookReqRecModel.setBookAuthor(null);
+                                                    bookReqRecModel.setBookName(null);
+                                                    bookReqRecModel.setCopies(0);
+                                                } catch (NullPointerException n) {
+                                                    Log.d("Error: ", Objects.requireNonNull(n.getMessage()));
+                                                }
                                                 Toast.makeText(getActivity(), "Request not found", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
+                                            progressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getActivity(), "Please Check Your Internet Connection", Toast.LENGTH_SHORT).show();
                                             Log.d(TAG, "get failed with ", task.getException());
                                         }
                                         bookName.setText(bookReqRecModel.getBookName());
@@ -132,32 +153,48 @@ public class FragmentBooksReqFromUser extends Fragment {
             acceptRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.isEmpty(searchField.getText().toString())) {
+                        Toast.makeText(getActivity(), "field is empty", Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     progressBar.setVisibility(View.VISIBLE);
                     @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
+                    @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    Calendar calendar = Calendar.getInstance();
                     try {
+                        calendar.setTime(Objects.requireNonNull(sdf.parse(String.valueOf(new Date()))));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    calendar.add(Calendar.DATE,7);
+                    try {
+                        Log.d("Info: ",bookReqRecModel.getRollNo());
                         firebaseFirestore.collection("REQREC")
-                                .document(bookReqRecModel.getRollNo())
-                                .update("RecCode","0","Bookreqrecdate",sdf.format(new Date()))
+                                .document(bookReqRecModel.getRollNo().toUpperCase())
+                                .update("RecCode", "0", "Bookreqrecdate", sdf.format(new Date()),"RetDate",sdf1.format(calendar.getTime()))
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        progressBar.setVisibility(View.GONE);
-                                        Log.d(TAG,"Book Request Accepted");
-                                        Toast.makeText(getActivity(),"Book Request Accepted",Toast.LENGTH_SHORT).show();
                                         try {
+                                            Log.d("Info: ",bookReqRecModel.getBookAbbr() + " "+bookReqRecModel.getCopies());
                                             firebaseFirestore.collection("Books")
                                                     .document(bookReqRecModel.getBookAbbr())
-                                                    .update("Book Req Code","0")
+                                                    .update("Copies", bookReqRecModel.getCopies() - 1)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d(TAG,"request code of book updated");
+                                                            Log.d(TAG, "Book Copies decreased by one");
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Log.d(TAG, "Book Request Accepted");
+                                                            Toast.makeText(getActivity(), "Book Request Accepted", Toast.LENGTH_SHORT).show();
+
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d(TAG,"Error updating Book");
+                                                            Log.d(TAG, "Error updating Book");
                                                         }
                                                     });
                                         } catch (Exception e) {
@@ -169,7 +206,7 @@ public class FragmentBooksReqFromUser extends Fragment {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getActivity(),"Error Accepting Book",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Error Accepting Book", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } catch (Exception e) {

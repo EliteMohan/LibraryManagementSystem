@@ -2,6 +2,7 @@ package android.com.mohan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +32,12 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FragmentBooksRecdUsersAdmin extends Fragment {
     private BookReqRecModel bookReqRecModel;
+    private BooksModel booksModel;
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference docRef;
     private EditText searchField;
     private ProgressBar progressBar;
-    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username,rollno;
+    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username,rollno, retDate;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,10 +49,14 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
         bookReqDate = view.findViewById(R.id.date_from_firestore);
         username = view.findViewById(R.id.username_from_firestore);
         rollno = view.findViewById(R.id.userRollNo);
+        retDate = view.findViewById(R.id.return_date_from_firestore);
         //input field
         AppCompatButton searchButton = view.findViewById(R.id.Search_Button);
         AppCompatButton receive = view.findViewById(R.id.receive_book_request);
+
         bookReqRecModel = new BookReqRecModel();
+        booksModel = new BooksModel();
+
         //searchfield
         searchField = view.findViewById(R.id.Search_RollNo);
         //firestore Instances
@@ -62,6 +68,11 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(TextUtils.isEmpty(searchField.getText().toString())){
+                        Toast.makeText(getActivity(),"field is empty",Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     try {
                         hideSoftKeyboard(Objects.requireNonNull(getActivity()));
                     } catch (NullPointerException e) {
@@ -94,7 +105,23 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
                                                 bookReqRecModel.setUserName(String.valueOf(doc.get("Username")));
                                                 bookReqRecModel.setBookReqRecDate(String.valueOf(doc.get("Bookreqrecdate")));
                                                 bookReqRecModel.setBookAbbr(String.valueOf(doc.get("Abbr")));
+                                                bookReqRecModel.setRetDate(String.valueOf(doc.get("RetDate")));
                                                 Toast.makeText(getActivity(),"Received Book",Toast.LENGTH_SHORT).show();
+                                                firebaseFirestore.collection("Books")
+                                                        .document(bookReqRecModel.getBookAbbr())
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                if(task.isSuccessful()){
+                                                                    DocumentSnapshot doc = task.getResult();
+                                                                    assert doc != null;
+                                                                    if(doc.exists()){
+                                                                        booksModel.setBookcopies(Objects.requireNonNull(doc.getLong("Copies")).intValue());
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
                                             } else {
                                                 Log.d(TAG, String.valueOf(doc.getData()));
                                                 bookReqRecModel.setBookReqRecDate(null);
@@ -103,9 +130,11 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
                                                 bookReqRecModel.setBookEdition(null);
                                                 bookReqRecModel.setBookAuthor(null);
                                                 bookReqRecModel.setBookName(null);
+                                                bookReqRecModel.setRetDate(null);
                                                 Toast.makeText(getActivity(), "Not Received", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
+                                            Toast.makeText(getActivity(),"Please Check Your Internet Connection",Toast.LENGTH_SHORT).show();
                                             Log.d(TAG, "get failed with ", task.getException());
                                         }
                                         bookName.setText(bookReqRecModel.getBookName());
@@ -114,6 +143,7 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
                                         bookReqDate.setText(bookReqRecModel.getBookReqRecDate());
                                         username.setText(bookReqRecModel.getUserName());
                                         rollno.setText(bookReqRecModel.getRollNo());
+                                        retDate.setText(bookReqRecModel.getRetDate());
                                     }
                                 });
                     } catch (Exception e) {
@@ -129,8 +159,13 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
             receive.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(TextUtils.isEmpty(searchField.getText().toString())){
+                        Toast.makeText(getActivity(),"field is empty",Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     progressBar.setVisibility(View.VISIBLE);
-                    firebaseFirestore.collection("REQREC").document(bookReqRecModel.getRollNo())
+                    firebaseFirestore.collection("REQREC").document(bookReqRecModel.getRollNo().toUpperCase())
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -139,7 +174,7 @@ public class FragmentBooksRecdUsersAdmin extends Fragment {
                                     Toast.makeText(getActivity(),"Book Received",Toast.LENGTH_SHORT).show();
                                     firebaseFirestore.collection("Books")
                                             .document(bookReqRecModel.getBookAbbr())
-                                            .update("Book Req Code","1")
+                                            .update("Copies",booksModel.getBookcopies()+1)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {

@@ -1,70 +1,70 @@
 package android.com.mohan;
 
-public class BooksModel {
-    private String BookName;
-    private String BookAbbr;
-    private String BookAuthor;
-    private String BookEdition;
-    private String BookISBNCode;
-    private String BookReqCode;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
+import java.io.Serializable;
+
+@IgnoreExtraProperties
+public class BooksModel implements Serializable {
+    public String bookname;
+    private String bookabbr;
+    private String bookauthor;
+    private String bookedition;
+    private String bookisbncode;
+    private int bookcopies;
 
     BooksModel() {
     }
 
-    public BooksModel(String bookName, String bookAbbr, String bookAuthor, String bookEdition, String bookISBNCode, String bookReqCode) {
-        this.BookName = bookName;
-        this.BookAbbr = bookAbbr;
-        this.BookAuthor = bookAuthor;
-        this.BookEdition = bookEdition;
-        this.BookISBNCode = bookISBNCode;
-        this.BookReqCode = bookReqCode;
+    BooksModel(String bookname, String bookauthor){
+        this.bookname = bookname;
+        this.bookauthor = bookauthor;
     }
 
-    String getBookISBNCode() {
-        return BookISBNCode;
+    int getBookcopies() {
+        return bookcopies;
+    }
+    void setBookcopies(Integer bookcopies) {
+        this.bookcopies = bookcopies;
     }
 
-    void setBookISBNCode(String bookISBNCode) {
-        this.BookISBNCode = bookISBNCode;
+    String getBookisbncode() {
+        return bookisbncode;
     }
 
-    public String getBookReqCode() {
-        return BookReqCode;
+    void setBookisbncode(String bookisbncode) {
+        this.bookisbncode = bookisbncode;
     }
 
-    public void setBookReqCode(String bookReqCode) {
-        this.BookReqCode = bookReqCode;
+    String getBookedition() {
+        return bookedition;
     }
 
-    String getBookEdition() {
-        return BookEdition;
+    void setBookedition(String bookedition) {
+        this.bookedition = bookedition;
     }
 
-    void setBookEdition(String bookEdition) {
-        this.BookEdition = bookEdition;
+    String getBookauthor() {
+        return bookauthor;
     }
 
-    String getBookAuthor() {
-        return BookAuthor;
+    void setBookauthor(String bookauthor) {
+        this.bookauthor = bookauthor;
     }
 
-    void setBookAuthor(String bookAuthor) {
-        this.BookAuthor = bookAuthor;
+    String getBookabbr() {
+        return bookabbr;
     }
 
-    String getBookAbbr() {
-        return BookAbbr;
+    void setBookabbr(String bookabbr) {
+        this.bookabbr = bookabbr;
     }
 
-    void setBookAbbr(String bookAbbr) {
-        this.BookAbbr = bookAbbr;
+    public String getBookname() {
+        return bookname;
     }
 
-    String getBookName() {
-        return BookName;
-    }
-
-    void setBookName(String bookName) {
-        this.BookName = bookName;
+    public void setBookname(String bookname) {
+        this.bookname = bookname;
     }
 }
