@@ -132,6 +132,26 @@
             android:textColor="@android:color/black"
             android:textSize="20sp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="112dp"
+            android:layout_height="match_parent"
+            android:text="@string/availability"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bookAvail_from_firestore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:text="@string/books_available"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/send_book_request"
         android:layout_width="wrap_content"

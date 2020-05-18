@@ -32,7 +32,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_user);
         MaterialToolbar materialToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(materialToolbar);
@@ -68,9 +72,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 assert documentSnapshot != null;
-                headerUsername.setText(documentSnapshot.getString("username"));
-                headerRollNo.setText(documentSnapshot.getString("rollno"));
-            }
+                try {
+                    headerUsername.setText(documentSnapshot.getString("username"));
+                    headerRollNo.setText(documentSnapshot.getString("rollno"));
+                }catch (NullPointerException n){
+                    Log.d("Error", Objects.requireNonNull(n.getMessage()));
+                }
+                }
         });
 
     }
@@ -88,7 +96,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentMyBooksUsers()).commit();
                 break;
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentSettings()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentSettingsUsers()).commit();
                 break;
         }
 

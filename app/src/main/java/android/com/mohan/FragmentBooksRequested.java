@@ -2,6 +2,7 @@ package android.com.mohan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,11 @@ public class FragmentBooksRequested extends Fragment {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(TextUtils.isEmpty(searchField.getText().toString())){
+                        Toast.makeText(getActivity(),"field is empty",Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     try {
                         hideSoftKeyboard(Objects.requireNonNull(getActivity()));
                     } catch (NullPointerException e) {
@@ -130,8 +136,13 @@ public class FragmentBooksRequested extends Fragment {
             deleteRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(TextUtils.isEmpty(searchField.getText().toString())){
+                        Toast.makeText(getActivity(),"field is empty",Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     progressBar.setVisibility(View.VISIBLE);
-                    firebaseFirestore.collection("REQREC").document(bookReqRecModel.getRollNo())
+                    firebaseFirestore.collection("REQREC").document(bookReqRecModel.getRollNo().toUpperCase())
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

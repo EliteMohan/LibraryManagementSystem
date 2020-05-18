@@ -39,6 +39,7 @@ public class FragmentUsersAdmin extends Fragment {
                 transaction.commit();
             }
         });
+
         return view;
     }
 }

@@ -12,19 +12,32 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_book_dialog"
             android:inputType="textCapCharacters"
-            android:hint="@string/add_book"/>
+            android:hint="@string/book_name"/>
     </com.google.android.material.textfield.TextInputLayout>
     <androidx.appcompat.widget.AppCompatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/removeBookAbbrev_dialog"
+        android:layout_marginTop="14dp"
         android:inputType="textCapCharacters"
         android:hint="@string/remove_book"/>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/book_abbrev_dialog_in"
+        android:id="@+id/book_avail_dialog_in"
         android:layout_marginTop="50dp">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/book_avail_dialog"
+            android:inputType="phone"
+            android:hint="@string/copies"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_abbrev_dialog_in"
+        android:layout_marginTop="100dp">
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/book_author_dialog_in"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="150dp">
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/book_edition_dialog_in"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="200dp">
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/book_isbn_dialog_in"
-        android:layout_marginTop="200dp">
+        android:layout_marginTop="250dp">
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,5 +82,4 @@
             android:inputType="phone"
             android:hint="@string/isbn_code"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 </RelativeLayout>

@@ -3,6 +3,7 @@ package android.com.mohan;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class FragmentSearchBook extends Fragment {
     private DocumentReference docRef;
     private EditText searchField;
     private ProgressBar progressBar;
-    private MaterialTextView bookName, bookAbbr, bookAuthor, bookEdition, bookISBNCode;
+    private MaterialTextView bookName, bookAbbr, bookAuthor, bookEdition, bookISBNCode, bookAvailability;
     private String ReqRecColID = "REQREC";
     private String UsersID = "users";
 
@@ -56,6 +57,7 @@ public class FragmentSearchBook extends Fragment {
         bookAuthor = view.findViewById(R.id.bookAuthor_from_firestore);
         bookEdition = view.findViewById(R.id.bookEdition_from_firestore);
         bookISBNCode = view.findViewById(R.id.bookISBN_from_firestore);
+        bookAvailability = view.findViewById(R.id.bookAvail_from_firestore);
         //Buttons
         AppCompatButton searchButton = view.findViewById(R.id.Search_Book_Button);
         AppCompatButton sendRequest = view.findViewById(R.id.send_book_request);
@@ -73,15 +75,20 @@ public class FragmentSearchBook extends Fragment {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.isEmpty(searchField.getText().toString())) {
+                        Toast.makeText(getActivity(), "field is empty", Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Book Abbreviation");
+                        return;
+                    }
                     try {
                         hideSoftKeyboard(Objects.requireNonNull(getActivity()));
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
                     progressBar.setVisibility(View.VISIBLE);
-                    booksModel.setBookAbbr(Objects.requireNonNull(searchField.getText()).toString());
+                    booksModel.setBookabbr(Objects.requireNonNull(searchField.getText()).toString());
                     try {
-                        docRef = firebaseFirestore.collection("Books").document(booksModel.getBookAbbr().toUpperCase());
+                        docRef = firebaseFirestore.collection("Books").document(booksModel.getBookabbr().toUpperCase());
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();
                     }
@@ -93,31 +100,49 @@ public class FragmentSearchBook extends Fragment {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
                                             progressBar.setVisibility(View.GONE);
+
                                             DocumentSnapshot doc = task.getResult();
                                             assert doc != null;
-                                            if (doc.exists() && Objects.equals(doc.get("Book Req Code"), "1")) {
-                                                booksModel.setBookName(String.valueOf(doc.get("Book Name")));
-                                                booksModel.setBookAbbr(String.valueOf(doc.get("Book Abbr")));
-                                                booksModel.setBookAuthor(String.valueOf(doc.get("Book Author")));
-                                                booksModel.setBookEdition(String.valueOf(doc.get("Book Edition")));
-                                                booksModel.setBookISBNCode(String.valueOf(doc.get("Book ISBN Code")));
+                                            if (doc.exists()) {
+                                                booksModel.setBookname(String.valueOf(doc.get("Book Name")));
+                                                booksModel.setBookabbr(String.valueOf(doc.get("Book Abbr")));
+                                                booksModel.setBookauthor(String.valueOf(doc.get("Book Author")));
+                                                booksModel.setBookedition(String.valueOf(doc.get("Book Edition")));
+                                                booksModel.setBookisbncode(String.valueOf(doc.get("Book ISBN Code")));
+                                                booksModel.setBookcopies(Objects.requireNonNull(doc.getLong("Copies")).intValue());
                                                 Toast.makeText(getActivity(), "Book Available", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                booksModel.setBookISBNCode(null);
-                                                booksModel.setBookEdition(null);
-                                                booksModel.setBookAuthor(null);
-                                                booksModel.setBookName(null);
-                                                booksModel.setBookAbbr(null);
-                                                Toast.makeText(getActivity(), "Book is unavailable", Toast.LENGTH_SHORT).show();
+                                                try {
+                                                    booksModel.setBookisbncode(null);
+                                                    booksModel.setBookedition(null);
+                                                    booksModel.setBookauthor(null);
+                                                    booksModel.setBookname(null);
+                                                    booksModel.setBookabbr(null);
+                                                    booksModel.setBookcopies(0);
+                                                } catch (NullPointerException e) {
+                                                    Log.d("Error: ", Objects.requireNonNull(e.getMessage()));
+                                                }
+                                                Toast.makeText(getActivity(), "Book not found", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
+                                            progressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getActivity(), "Please Check your Internet Connection", Toast.LENGTH_SHORT).show();
                                             Log.d(TAG, "get failed with ", task.getException());
                                         }
-                                        bookName.setText(booksModel.getBookName());
-                                        bookAbbr.setText(booksModel.getBookAbbr());
-                                        bookAuthor.setText(booksModel.getBookAuthor());
-                                        bookEdition.setText(booksModel.getBookEdition());
-                                        bookISBNCode.setText(booksModel.getBookISBNCode());
+                                        bookName.setText(booksModel.getBookname());
+                                        bookAbbr.setText(booksModel.getBookabbr());
+                                        bookAuthor.setText(booksModel.getBookauthor());
+                                        bookEdition.setText(booksModel.getBookedition());
+                                        bookISBNCode.setText(booksModel.getBookisbncode());
+                                        String bookAvail;
+                                        if (booksModel.getBookcopies() > 1) {
+                                            bookAvail = booksModel.getBookcopies() + " Books Available";
+                                        } else if (booksModel.getBookcopies() == 1) {
+                                            bookAvail = booksModel.getBookcopies() + "Book Available";
+                                        } else {
+                                            bookAvail = "No Book Available";
+                                        }
+                                        bookAvailability.setText(bookAvail);
                                     }
                                 });
                     } catch (NullPointerException e) {
@@ -125,7 +150,7 @@ public class FragmentSearchBook extends Fragment {
                     }
                 }
             });
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
@@ -134,6 +159,11 @@ public class FragmentSearchBook extends Fragment {
 
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.isEmpty(searchField.getText().toString())) {
+                        Toast.makeText(getActivity(), "field is empty", Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Book Abbreviation");
+                        return;
+                    }
                     progressBar.setVisibility(View.VISIBLE);
 //                    dateStr = df.format(new Date());
                     FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -174,12 +204,13 @@ public class FragmentSearchBook extends Fragment {
         Map<String, Object> data = new HashMap<>();
         data.put("Username", Username);
         data.put("Rollno", Rollno);
-        data.put("Bookname", booksModel.getBookName());
-        data.put("Bookauthor", booksModel.getBookAuthor());
-        data.put("Bookedition", booksModel.getBookEdition());
+        data.put("Bookname", booksModel.getBookname());
+        data.put("Bookauthor", booksModel.getBookauthor());
+        data.put("Bookedition", booksModel.getBookedition());
         data.put("Bookreqrecdate", BookReqRecDate);
         data.put("RecCode", "1");
-        data.put("Abbr",booksModel.getBookAbbr());
+        data.put("Copies", booksModel.getBookcopies());
+        data.put("Abbr", booksModel.getBookabbr());
         return data;
     }
 
@@ -188,7 +219,7 @@ public class FragmentSearchBook extends Fragment {
     private void recursiveRequestCreator(final String RollNo, final String Username, final int recursionLimit) {
         if (recursionLimit <= 3) {
             @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
-            docRef = firebaseFirestore.collection(ReqRecColID).document(RollNo);
+            docRef = firebaseFirestore.collection(ReqRecColID).document(RollNo.toUpperCase());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -196,10 +227,22 @@ public class FragmentSearchBook extends Fragment {
                         DocumentSnapshot doc = task.getResult();
                         assert doc != null;
                         if (doc.exists()) {
-                            if ((Objects.equals(doc.getString("Bookname"), booksModel.getBookName())
-                                    || Objects.equals(doc.getString("Bookauthor"), booksModel.getBookAuthor()))
-                                    && Objects.equals(doc.getString("Bookedition"), booksModel.getBookEdition())) {
-                                Toast.makeText(getActivity(), "This book(" + doc.getString("Bookname") + ") request sent already", Toast.LENGTH_SHORT).show();
+                            boolean isSameEdition = Objects.equals(doc.getString("Bookedition"), booksModel.getBookedition());
+                            if (isSameEdition) {
+                                //This if block logic says that same person can request a book only once
+                                boolean isSameBookANDAuthor = Objects.equals(doc.getString("Bookname"), booksModel.getBookname())
+                                        && Objects.equals(doc.getString("Bookauthor"), booksModel.getBookauthor());
+                                if (isSameBookANDAuthor) {
+                                    Toast.makeText(getActivity(), "This book(" + doc.getString("Bookname") + ") request sent already", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    int Limit = recursionLimit;
+                                    Limit++;
+                                    Log.d(TAG, "book requests exists for " + RollNo);
+                                    Log.d(TAG, String.valueOf(doc.getData()));
+                                    // book requests creating
+                                    recursiveRequestCreator(RollNo + "1", Username, Limit);
+                                }
+
                             } else {
                                 int Limit = recursionLimit;
                                 Limit++;
@@ -209,20 +252,24 @@ public class FragmentSearchBook extends Fragment {
                                 recursiveRequestCreator(RollNo + "1", Username, Limit);
                             }
                         } else {
-                            Log.d(TAG, "creating book request for " + RollNo);
-                            docRef = firebaseFirestore.collection(ReqRecColID).document(RollNo);
-                            docRef.set(ReqRecData(Username, RollNo, sdf.format(new Date()))).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "Request for " + RollNo + " added successfully");
-                                    Toast.makeText(getActivity(), "Request Sent Successfully for " + booksModel.getBookName(), Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "Request for " + RollNo + " Failed");
-                                }
-                            });
+                            if (booksModel.getBookcopies() > 0) {
+                                docRef = firebaseFirestore.collection(ReqRecColID).document(RollNo.toUpperCase());
+                                docRef.set(ReqRecData(Username, RollNo, sdf.format(new Date())))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Request for " + RollNo + " added successfully");
+                                                Toast.makeText(getActivity(), "Request Sent Successfully for " + booksModel.getBookname(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "Request for " + RollNo + " Failed");
+                                    }
+                                });
+                            } else if (booksModel.getBookcopies() == 0) {
+                                Toast.makeText(getActivity(), "Book Currently Unavailable", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }

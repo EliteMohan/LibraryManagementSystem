@@ -137,7 +137,7 @@
         android:layout_height="35dp"
         android:orientation="horizontal">
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="110dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:text="@string/roll_no"
             android:textStyle="bold"
@@ -152,6 +152,27 @@
             android:textColor="@android:color/black"
             android:textSize="20sp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:text="@string/return_date"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/return_date_from_firestore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:text="@string/date"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <ProgressBar
         android:id="@+id/progressBarDelete"

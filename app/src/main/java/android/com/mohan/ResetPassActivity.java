@@ -20,6 +20,7 @@ public class ResetPassActivity extends AppCompatActivity {
     private EditText inputEmail;
     private Button login;
     private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,44 +29,50 @@ public class ResetPassActivity extends AppCompatActivity {
         Button btnReset = findViewById(R.id.btn_reset_password);
         login = findViewById(R.id.btn_login);
         auth = FirebaseAuth.getInstance();
+        try {
+            btnReset.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = inputEmail.getText().toString().trim();
+                    if (TextUtils.isEmpty(email)) {
+                        Toast.makeText(getApplication(), "Enter your mail address", Toast.LENGTH_SHORT).show();
+                        inputEmail.setError("Enter your Email");
+                        return;
+                    }
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = inputEmail.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplication(), "Enter your mail address", Toast.LENGTH_SHORT).show();
-                    inputEmail.setError("Enter your Email");
-                    return;
-                }
+                    try {
+                        auth.sendPasswordResetEmail(email)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(ResetPassActivity.this, "We send you an e-mail", Toast.LENGTH_SHORT).show();
+                                            login.performClick();
 
-                try {
-                    auth.sendPasswordResetEmail(email)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(ResetPassActivity.this, "We send you an e-mail", Toast.LENGTH_SHORT).show();
-                                        login.performClick();
-
-                                    } else {
-                                        Toast.makeText(ResetPassActivity.this, "Please ensure you  college mail", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(ResetPassActivity.this, "Please enter correct mail", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                                });
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ResetPassActivity.this,LoginAndSignUpActivity.class));
-                finish();
-            }
-        });
-
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(ResetPassActivity.this, LoginAndSignUpActivity.class));
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

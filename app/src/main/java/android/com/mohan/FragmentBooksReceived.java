@@ -2,6 +2,7 @@ package android.com.mohan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class FragmentBooksReceived extends Fragment {
     private DocumentReference docRef;
     private EditText searchField;
     private ProgressBar progressBar;
-    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username,rollno;
+    private MaterialTextView bookName, bookReqDate, bookAuthor, bookEdition, username,rollno,retDate;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,9 +47,9 @@ public class FragmentBooksReceived extends Fragment {
         bookReqDate = view.findViewById(R.id.date_from_firestore);
         username = view.findViewById(R.id.username_from_firestore);
         rollno = view.findViewById(R.id.userRollNo);
+        retDate = view.findViewById(R.id.return_date_from_firestore);
         //input field
         AppCompatButton searchButton = view.findViewById(R.id.Search_Button);
-        AppCompatButton deleteRequest = view.findViewById(R.id.delete_book_request);
         bookReqRecModel = new BookReqRecModel();
         //searchfield
         searchField = view.findViewById(R.id.Search_RollNo);
@@ -61,6 +62,11 @@ public class FragmentBooksReceived extends Fragment {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(TextUtils.isEmpty(searchField.getText().toString())){
+                        Toast.makeText(getActivity(),"field is empty",Toast.LENGTH_SHORT).show();
+                        searchField.setError("Enter Your Roll No");
+                        return;
+                    }
                     try {
                         hideSoftKeyboard(Objects.requireNonNull(getActivity()));
                     } catch (NullPointerException e) {
@@ -92,6 +98,7 @@ public class FragmentBooksReceived extends Fragment {
                                                 bookReqRecModel.setRollNo(String.valueOf(doc.get("Rollno")));
                                                 bookReqRecModel.setUserName(String.valueOf(doc.get("Username")));
                                                 bookReqRecModel.setBookReqRecDate(String.valueOf(doc.get("Bookreqrecdate")));
+                                                bookReqRecModel.setRetDate(String.valueOf(doc.get("RetDate")));
                                                 Toast.makeText(getActivity(), "Received Book", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Log.d(TAG, String.valueOf(doc.getData()));
@@ -101,6 +108,7 @@ public class FragmentBooksReceived extends Fragment {
                                                 bookReqRecModel.setBookEdition(null);
                                                 bookReqRecModel.setBookAuthor(null);
                                                 bookReqRecModel.setBookName(null);
+                                                bookReqRecModel.setRetDate(null);
                                                 Toast.makeText(getActivity(), "Not Received", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
@@ -112,6 +120,7 @@ public class FragmentBooksReceived extends Fragment {
                                         bookReqDate.setText(bookReqRecModel.getBookReqRecDate());
                                         username.setText(bookReqRecModel.getUserName());
                                         rollno.setText(bookReqRecModel.getRollNo());
+                                        retDate.setText(bookReqRecModel.getRetDate());
                                     }
                                 });
                     } catch (Exception e) {
