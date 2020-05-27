@@ -13,6 +13,8 @@
     <string name="phoneHint">phone</string>
     <string name="roll_noHint">Roll No.</string>
     <string name="signupBtn">SIGNUP</string>
+    <string name="signup_login_hint">Already have an account? Sign In</string>
+    <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="linkToLoginBtn">Already Registered,Click Here To Login</string>
     <string name="linkToSignUpText">Click Here To Signup</string>
     <string name="getUsernameHint">Username</string>
@@ -102,4 +104,25 @@
     <string name="book_1">Book 1</string>
     <string name="book_2">Book 2</string>
     <string name="search_here">Search here</string>
+    <string name="new_book_recommendation">New Book Recommendation</string>
+    <string name="reqrec_code">REQREC Code</string>
+    <string name="register">REGISTER</string>
+    <string name="login_background">login background</string>
+    <string name="siddharth_library">Siddharth Library</string>
+    <string name="click_here_to_login">Click here to login</string>
+    <string name="books_requested_users">Books Requested Users</string>
+    <string name="_16f61a04a3">16F61A04A3</string>
+    <string name="k_mahesh_reddy">K MAHESH REDDY</string>
+    <string name="_16f61a0479">16F61A0479</string>
+    <string name="n_jhansi_chowdary">N JHANSI CHOWDARY</string>
+    <string name="_16f61a0477">16F61A0477</string>
+    <string name="v_jahnavi_reddy">V JAHNAVI REDDY</string>
+    <string name="_16f61a04b3">16F61A04B3</string>
+    <string name="d_mounika">D MOUNIKA</string>
+    <string name="_16f61a04b0">16F61A04B0</string>
+    <string name="n_mohan">N MOHAN</string>
+    <string name="by_ece_students">By ECE Students</string>
+    <string name="choose">Choose</string>
+    <string name="book_image_name">Book Image Name</string>
+
 </resources>

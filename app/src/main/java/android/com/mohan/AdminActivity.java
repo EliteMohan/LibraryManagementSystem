@@ -1,16 +1,18 @@
 package android.com.mohan;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -35,8 +37,9 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         }
         setContentView(R.layout.activity_admin);
         MaterialToolbar materialToolbar = findViewById(R.id.toolbar_admin);
-        setSupportActionBar(materialToolbar);
 
+        setSupportActionBar(materialToolbar);
+        materialToolbar.setTitleTextAppearance(getApplicationContext(),R.style.Toolbar_TitleText);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();//FirebaseAuth Instance
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();//Firebase Firestore Instance
 
@@ -85,15 +88,19 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_account_admin:
+                getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentAccount()).commit();
                 break;
             case R.id.nav_library_books_admin:
+                getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentLibraryAdmin()).commit();
                 break;
             case R.id.nav_users_admin:
+                getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentUsersAdmin()).commit();
                 break;
             case R.id.nav_settings_admin:
+                getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentSettings()).commit();
                 break;
         }
@@ -102,8 +109,10 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onBackPressed() {
+
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {

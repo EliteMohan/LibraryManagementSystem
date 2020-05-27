@@ -1,131 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/holo_blue_light"
-    android:id="@+id/fragment_mybooks"
-    android:orientation="vertical">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="110dp"
-        android:orientation="horizontal"
-        android:id="@+id/fragmentPartMyBooksUserOne"
-        android:background="@android:color/white">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ViewBookRequestIcon"
-            android:src="@drawable/ic_book_request"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:id="@+id/view_books_requestedID"
-            android:text="@string/view_books_requested"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/loginCard"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/loginViewsMargin"
+    android:layout_marginBottom="@dimen/loginViewsMargin"
+    android:background="@color/whiteCardColor"
+    android:elevation="5dp"
+    app:cardCornerRadius="@dimen/loginCardRadius">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="180dp"
-        android:orientation="horizontal"
-        android:id="@+id/fragmentPartMyBooksUserTwo"
-        android:background="@android:color/white">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_booksRecievedIcon"
-            android:src="@drawable/ic_all_book"
+    <LinearLayout
+        style="@style/linearParent"
+        android:layout_gravity="center"
+        android:padding="20dp">
+        <Button
+            android:id="@+id/view_booksRequestedID"
+            android:text="@string/view_books_requested"
+            style="@style/loginButton"
+            android:layout_width="280dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textColor="@android:color/black" />
+
+        <Button
             android:id="@+id/view_booksRecievedID"
-            android:text="@string/view_books_recieved"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="250dp"
-        android:orientation="horizontal"
-        android:id="@+id/fragmentPartMyBooksUserThree"
-        android:background="@android:color/white">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_attach_money_black_24dp"
+            android:text="@string/view_books_recieved"
+            style="@style/loginButton"
+            android:layout_width="280dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:id="@+id/totalFineAmountID"
-            android:text="@string/total_fine_amount"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:textColor="@android:color/black" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="320dp"
-        android:orientation="horizontal"
-        android:id="@+id/fragmentPartMyBooksFour"
-        android:background="@android:color/white">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_return"
+        <Button
+            android:id="@+id/retDateBookID"
+            android:text="@string/all_books_return_date"
+            style="@style/loginButton"
+            android:layout_width="280dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:id="@+id/feedbackBookID"
-            android:text="@string/all_books_return_date"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="450dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginStart="70dp"
-        android:src="@drawable/splash_background"/>
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="660dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:text="@string/from_siddharth_library"
-        android:textAlignment="center"
-        android:textStyle="bold|italic"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        tools:ignore="RelativeOverlap" />
-</RelativeLayout>
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

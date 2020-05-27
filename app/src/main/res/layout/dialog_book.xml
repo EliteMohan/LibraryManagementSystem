@@ -1,85 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/add_book_dialog_in">
-        <androidx.appcompat.widget.AppCompatEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_book_dialog"
-            android:inputType="textCapCharacters"
-            android:hint="@string/book_name"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <androidx.appcompat.widget.AppCompatEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/removeBookAbbrev_dialog"
-        android:layout_marginTop="14dp"
-        android:inputType="textCapCharacters"
-        android:hint="@string/remove_book"/>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_avail_dialog_in"
-        android:layout_marginTop="50dp">
-        <androidx.appcompat.widget.AppCompatEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/book_avail_dialog"
-            android:inputType="phone"
-            android:hint="@string/copies"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_abbrev_dialog_in"
-        android:layout_marginTop="100dp">
-        <androidx.appcompat.widget.AppCompatEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/book_abbrev_dialog"
-            android:inputType="textCapCharacters"
-            android:hint="@string/abbreviation"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/book_author_dialog_in"
-        android:layout_marginTop="150dp">
+        android:orientation="vertical"
+        android:padding="@dimen/_16sdp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_book_dialog_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/add_book_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/book_name"
+                android:inputType="textCapCharacters" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/removeBookAbbrev_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/book_author_dialog"
-            android:inputType="textCapCharacters"
-            android:hint="@string/author"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_edition_dialog_in"
-        android:layout_marginTop="200dp">
-        <androidx.appcompat.widget.AppCompatEditText
+            android:hint="@string/remove_book"
+            android:inputType="textCapCharacters" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_avail_dialog_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/book_avail_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/copies"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_author_dialog_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/book_author_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/author"
+                android:inputType="textCapCharacters" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_edition_dialog_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/book_edition_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edition"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_isbn_dialog_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/book_isbn_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/isbn_code"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/imagelayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/book_edition_dialog"
-            android:inputType="phone"
-            android:hint="@string/edition"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_isbn_dialog_in"
-        android:layout_marginTop="250dp">
-        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_marginTop="@dimen/_7sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/book_image_name"
+                android:layout_width="@dimen/_170sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:text="@string/book_image_name"
+                android:textSize="@dimen/_14ssp" />
+
+            <Button
+                android:id="@+id/file_chooser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose" />
+        </LinearLayout>
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progressBarSend"
+            android:layout_marginTop="@dimen/_16sdp"
+            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/book_isbn_dialog"
-            android:inputType="phone"
-            android:hint="@string/isbn_code"/>
-    </com.google.android.material.textfield.TextInputLayout>
-</RelativeLayout>
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>

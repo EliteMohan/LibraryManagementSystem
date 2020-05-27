@@ -1,8 +1,6 @@
 package android.com.mohan;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +8,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class BookListAdapter extends FirestoreRecyclerAdapter<BooksModel, BookListAdapter.ViewHolder> {
 
     private Context context;
-
-    BookListAdapter(@NonNull FirestoreRecyclerOptions<BooksModel> options, Context context) {
+    private String tag;
+    private  ContentLoadingProgressBar progressBar;
+    BookListAdapter(@NonNull FirestoreRecyclerOptions<BooksModel> options, Context context, String tag, ContentLoadingProgressBar progressBar) {
         super(options);
         this.context = context;
+        this.tag = tag;
+        this.progressBar = progressBar;
     }
 
 
@@ -33,25 +38,25 @@ public class BookListAdapter extends FirestoreRecyclerAdapter<BooksModel, BookLi
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final BooksModel model) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final BooksModel model) {
 
         int pos = position + 1;
-//        Context mContext = context;
         String concat = pos + ". " + model.getBookname();
-        holder.bookName.setText(concat);
-        Log.d("Checking", String.valueOf(TextUtils.isEmpty(model.getBookname())));
-        holder.bookAuthor.setText(model.getBookauthor());
-        String[] AbbrExtract = model.getBookname().split(" ");
-        final StringBuilder Abbr = new StringBuilder();
-        for (String str : AbbrExtract) {
-            char Char = str.charAt(0);
-            Abbr.append(Char);
+
+        if(model.getImageurl().equals("noimage")){
+            holder.bookImage.setImageResource(R.mipmap.book_cover);
+        }else {
+            Glide.with(context).load(model.getImageurl()).into(holder.bookImage);
         }
+
+        holder.bookName.setText(concat);
+        holder.bookAuthor.setText(model.getBookauthor());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewBookDialog bookDialog = new ViewBookDialog(context,Abbr,model.getBookname(),model.getBookauthor());
-                bookDialog.show(((AppCompatActivity)context).getSupportFragmentManager(),"BookDialog");
+                DocumentSnapshot doc = getSnapshots().getSnapshot(holder.getAdapterPosition());//gives document ID
+                ViewBookDialog bookDialog = new ViewBookDialog(context, doc.getId(), model.getBookname(), model.getBookauthor(),tag,progressBar);
+                bookDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "BookDialog");
             }
         });
 
@@ -60,10 +65,12 @@ public class BookListAdapter extends FirestoreRecyclerAdapter<BooksModel, BookLi
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView bookName, bookAuthor;
         private View mView;
+        private AppCompatImageView bookImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            bookImage = itemView.findViewById(R.id.image_sample);
             bookName = itemView.findViewById(R.id.book_name_1);
             bookAuthor = itemView.findViewById(R.id.book_author_1);
         }
