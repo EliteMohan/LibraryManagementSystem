@@ -2,25 +2,50 @@ package android.com.mohan;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
-@IgnoreExtraProperties
-public class BookReqRecModel {
-    private String bookName;
-    private String bookAuthor;
-    private String bookEdition;
-    private String bookReqRecDate;
-    private String bookAbbr;
-    private String recCode;
-    private String userName;
-    private String rollNo;
-    private int copies;
-    private String retDate;
+import java.io.Serializable;
 
-    String getRetDate() {
-        return retDate;
+@IgnoreExtraProperties
+class BookReqRecModel implements Serializable {
+    private String bookname;
+    private String bookauthor;
+    private String bookedition;
+    private String bookreqrecdate;
+    private String bookabbr;
+    private String reccode;
+    private String username;
+    private String rollno;
+    private int copies;
+    private String retdate;
+    private String imageurl;
+
+    String getImageurl() {
+        return imageurl;
     }
 
-    void setRetDate(String retDate) {
-        this.retDate = retDate;
+    void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
+    BookReqRecModel(String rollno, String bookname, String reccode,String imageurl) {
+        this.rollno = rollno.toUpperCase();
+        this.bookname = bookname;
+        this.reccode = reccode;
+        this.imageurl = imageurl;
+    }
+
+
+    BookReqRecModel(String retDate, String bookname,String imageurl) {
+        this.retdate = retDate;
+        this.bookname = bookname;
+        this.imageurl = imageurl;
+    }
+
+    String getRetdate() {
+        return retdate;
+    }
+
+    void setRetdate(String retdate) {
+        this.retdate = retdate;
     }
 
     int getCopies() {
@@ -31,80 +56,62 @@ public class BookReqRecModel {
         this.copies = copies;
     }
 
-    BookReqRecModel(String bookName, String bookAuthor, String bookEdition, String bookReqRecDate, String recCode, String userName, String rollNo, String bookAbbr) {
-        this.bookName = bookName;
-        this.bookAuthor = bookAuthor;
-        this.bookEdition = bookEdition;
-        this.bookReqRecDate = bookReqRecDate;
-        this.recCode = recCode;
-        this.userName = userName;
-        this.rollNo = rollNo;
-        this.bookAbbr = bookAbbr;
-    }
     BookReqRecModel(){}
 
-    String getBookAbbr() {
-        return bookAbbr;
+    String getBookabbr() {
+        return bookabbr;
     }
 
-    void setBookAbbr(String bookAbbr) {
-        this.bookAbbr = bookAbbr;
+    void setBookabbr(String bookabbr) {
+        this.bookabbr = bookabbr;
     }
 
-    String getBookName() {
-        return bookName;
+    String getBookname() {
+        return bookname;
     }
 
-    void setBookName(String bookName) {
-        this.bookName = bookName;
+    void setBookname(String bookname) {
+        this.bookname = bookname;
     }
 
-    String getBookAuthor() {
-        return bookAuthor;
+    String getBookauthor() {
+        return bookauthor;
     }
 
-    void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    void setBookauthor(String bookauthor) {
+        this.bookauthor = bookauthor;
     }
 
-    String getBookEdition() {
-        return bookEdition;
+    String getBookedition() {
+        return bookedition;
     }
 
-    void setBookEdition(String bookEdition) {
-        this.bookEdition = bookEdition;
+    void setBookedition(String bookedition) {
+        this.bookedition = bookedition;
     }
 
-    String getBookReqRecDate() {
-        return bookReqRecDate;
+    void setBookreqrecdate(String bookreqrecdate) {
+        this.bookreqrecdate = bookreqrecdate;
     }
 
-    void setBookReqRecDate(String bookReqRecDate) {
-        this.bookReqRecDate = bookReqRecDate;
+    String getReccode() {
+        return reccode;
     }
 
-    public String getRecCode() {
-        return recCode;
+    String getUsername() {
+        return username;
     }
 
-    public void setRecCode(String recCode) {
-        this.recCode = recCode;
+    void setUsername(String username) {
+        this.username = username;
     }
 
-    String getUserName() {
-        return userName;
+    String getRollno() {
+        return rollno;
     }
 
-    void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    String getRollNo() {
-        return rollNo;
-    }
-
-    void setRollNo(String rollNo) {
-        this.rollNo = rollNo;
+    void setRollno(String rollno) {
+        this.rollno = rollno;
     }
 
 }

@@ -5,12 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.Objects;
 import static android.content.ContentValues.TAG;
 
 public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminOne.FragBookAdminOneListener {
-    private AppCompatTextView RemainBooks;
+
     private FragmentBookAdminOne bookAdminOne;
     private FirebaseFirestore firebaseFirestore;
 
@@ -37,9 +38,10 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library_admin, container, false);
-        AppCompatTextView addBook = view.findViewById(R.id.add_bookID);
-        AppCompatTextView removeBook = view.findViewById(R.id.removeBookID);
-        LinearLayoutCompat viewAllBooks = view.findViewById(R.id.fragmentPartAdminTwo);
+        Button addBook = view.findViewById(R.id.add_bookID);
+        Button removeBook = view.findViewById(R.id.removeBookID);
+        Button viewAllBooks = view.findViewById(R.id.viewAllBooksID);
+        Button remainBooks = view.findViewById(R.id.remainBookID);
 
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +61,7 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
                 FragmentViewAllBooks fragmentViewAllBooks = new FragmentViewAllBooks();
                 assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container_admin,fragmentViewAllBooks);
+                transaction.replace(R.id.fragment_container_admin_1, fragmentViewAllBooks, "All Books");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -77,12 +79,22 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
             }
         });
 
-
+        remainBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentViewAllBooks fragmentViewAllBooks = new FragmentViewAllBooks();
+                assert getFragmentManager() != null;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container_admin_1, fragmentViewAllBooks, "Remaining Books");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 
     @Override
-    public void addBookData(final String addBookStr, final String abbrStr, String authorStr, String editionStr, String isbnCodeStr, String reqCode, int copiesInt) {
+    public void addBookData(final String addBookStr, final String abbrStr, String authorStr, String editionStr, String isbnCodeStr, String reqCode, int copiesInt, String s) {
         firebaseFirestore = FirebaseFirestore.getInstance();//Firebase Firestore Instance
         //creating collection(database) users with document(tables) userID
         DocumentReference documentReference = firebaseFirestore.collection("Books").document(abbrStr.toUpperCase());
@@ -94,21 +106,11 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
         Book.put("Book Edition", editionStr);
         Book.put("Book ISBN Code", isbnCodeStr);
         Book.put("Copies", copiesInt);
+        Book.put("Total Copies", copiesInt);
+        Book.put("imageurl", s);
         //adds book to Books collection
         //success and failure listeners
         documentReference.set(Book).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Book ".concat(addBookStr).concat(" Added Successfully"), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("ErrorInfo", "onFailure ".concat(e.toString()));
-            }
-        });
-        DocumentReference documentReference1 = firebaseFirestore.collection("BooksTwo").document(abbrStr.toUpperCase());
-        documentReference1.set(Book).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getActivity(), "Book ".concat(addBookStr).concat(" Added Successfully"), Toast.LENGTH_SHORT).show();
@@ -133,6 +135,7 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
                             DocumentSnapshot doc = task.getResult();
                             assert doc != null;
                             if (doc.exists()) {
+                                final String imageURL = doc.getString("imageurl");
                                 Long copies = doc.getLong("Copies");
                                 @SuppressWarnings("ConstantConditions") final Long finalCopies = copies - copiesInt;
                                 if (finalCopies > 0) {
@@ -156,8 +159,23 @@ public class FragmentLibraryAdmin extends Fragment implements FragmentBookAdminO
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                    Toast.makeText(getActivity(), "Book data removed completely", Toast.LENGTH_SHORT).show();
+                                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                    assert imageURL != null;
+                                                    StorageReference imageRef = storage.getReferenceFromUrl(imageURL);
+                                                    imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                            Toast.makeText(getActivity(), "Book data removed completely", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d(TAG, "Filed to delete file");
+                                                            Toast.makeText(getActivity(), "Filed to delete file", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {

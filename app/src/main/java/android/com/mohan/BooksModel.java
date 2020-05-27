@@ -5,35 +5,44 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.io.Serializable;
 
 @IgnoreExtraProperties
-public class BooksModel implements Serializable {
-    public String bookname;
+class BooksModel implements Serializable {
+    private String bookname;
     private String bookabbr;
     private String bookauthor;
     private String bookedition;
     private String bookisbncode;
     private int bookcopies;
+    private String imageurl;
+
+    String getImageurl() {
+        return imageurl;
+    }
+
+    void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
 
     BooksModel() {
     }
 
-    BooksModel(String bookname, String bookauthor){
+
+    BooksModel(String bookname, String bookauthor, String imageurl) {
         this.bookname = bookname;
         this.bookauthor = bookauthor;
+        this.imageurl = imageurl;
     }
+
 
     int getBookcopies() {
         return bookcopies;
     }
+
     void setBookcopies(Integer bookcopies) {
         this.bookcopies = bookcopies;
     }
 
     String getBookisbncode() {
         return bookisbncode;
-    }
-
-    void setBookisbncode(String bookisbncode) {
-        this.bookisbncode = bookisbncode;
     }
 
     String getBookedition() {
@@ -60,11 +69,11 @@ public class BooksModel implements Serializable {
         this.bookabbr = bookabbr;
     }
 
-    public String getBookname() {
+    String getBookname() {
         return bookname;
     }
 
-    public void setBookname(String bookname) {
+    void setBookname(String bookname) {
         this.bookname = bookname;
     }
 }

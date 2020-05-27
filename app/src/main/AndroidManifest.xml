@@ -3,7 +3,7 @@
     package="android.com.mohan">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AdminActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ResetPassActivity" />
         <activity android:name=".UserActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

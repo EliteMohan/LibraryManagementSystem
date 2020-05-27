@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/loginCard"
+    app:cardCornerRadius="@dimen/_6sdp"
+    android:elevation="@dimen/_2sdp"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/_6sdp"
+    android:layout_marginBottom="@dimen/_6sdp"
+    android:background="@color/whiteCardColor">
+
+    <LinearLayout
+        style="@style/linearParent"
+        android:layout_gravity="center"
+        android:padding="@dimen/_20sdp">
+
+        <TextView
+            style="@style/headerTextPrimary"
+            android:text="@string/loginButton"
+            android:layout_marginTop="@dimen/_20sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputEmail"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/_20sdp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/emailLoginID"
+                style="@style/modifiedEditText"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:hint="@string/emailTitle"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPassword"
+            style="@style/parent"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/holo_blue_light"
+            android:layout_marginTop="@dimen/_20sdp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordLoginID"
+                style="@style/modifiedEditText"
+                android:hint="@string/passwordTitle"
+                android:maxLines="1"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/ForgotPassButton"
+            style="@style/viewParent"
+            android:text="@string/forgot_passwordButton"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="@dimen/_10ssp"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <Button
+            android:id="@+id/cirLoginButton"
+            style="@style/loginButton"
+            android:text="@string/loginButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_20sdp"/>
+
+        <TextView
+            android:id="@+id/linkToSignupID"
+            style="@style/parent"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/login_signup_hint"
+            android:layout_marginTop="@dimen/_20sdp"/>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progressBarSend"
+            android:layout_marginTop="@dimen/_16sdp"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
