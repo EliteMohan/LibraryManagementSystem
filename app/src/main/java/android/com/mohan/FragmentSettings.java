@@ -1,6 +1,7 @@
 package android.com.mohan;
 
 import android.annotation.SuppressLint;
+import android.com.mohan.Modules.AuthenticationModule.AuthenticationActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class FragmentSettings extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             FirebaseAuth.getInstance().signOut();
                             Toast.makeText(getActivity(),"Logout Successful",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(),LoginAndSignUpActivity.class));
+                            startActivity(new Intent(getActivity(), AuthenticationActivity.class));
                             Objects.requireNonNull(getActivity()).finish();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {

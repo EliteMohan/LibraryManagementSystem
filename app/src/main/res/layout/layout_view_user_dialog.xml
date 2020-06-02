@@ -6,74 +6,74 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_37sdp"
-        android:id="@+id/add_book_dialog_in">
+        android:id="@+id/username_dialog_in">
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_37sdp"
-            android:id="@+id/add_book_dialog"
-            android:text="@string/book_name"
+            android:id="@+id/username_dialog"
+            android:text="@string/usernameTitle"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_37sdp"
-        android:id="@+id/book_author_dialog_in">
+        android:id="@+id/rollno_dialog_in">
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_37sdp"
-            android:id="@+id/book_author_dialog"
-            android:text="@string/author"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_37sdp"
-        android:id="@+id/book_edition_dialog_in">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_37sdp"
-            android:id="@+id/book_edition_dialog"
-            android:text="@string/edition"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_37sdp"
-        android:id="@+id/book_reqresdate_dialog_in">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_37sdp"
-            android:id="@+id/book_reqresdate_dialog"
-            android:text="@string/requested_date"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_37sdp"
-        android:id="@+id/book_username_dialog_in">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_37sdp"
-            android:id="@+id/book_username_dialog"
-            android:text="@string/username"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_37sdp"
-        android:id="@+id/book_rollno_dialog_in">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_37sdp"
-            android:id="@+id/book_rollno_dialog"
+            android:id="@+id/rollno_dialog"
             android:text="@string/roll_number"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_37sdp"
+        android:id="@+id/email_dialog_in">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_37sdp"
+            android:id="@+id/email_dialog"
+            android:text="@string/emailTitle"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_37sdp"
+        android:id="@+id/phone_dialog_in">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_37sdp"
+            android:id="@+id/phone_dialog"
+            android:text="@string/phoneHint"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_37sdp"
+        android:id="@+id/gender_dialog_in">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_37sdp"
+            android:id="@+id/gender_dialog"
+            android:text="@string/gender"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_37sdp"
+        android:id="@+id/college_dialog_in">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_37sdp"
+            android:id="@+id/college_dialog"
+            android:text="@string/college"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"/>
     </com.google.android.material.textfield.TextInputLayout>

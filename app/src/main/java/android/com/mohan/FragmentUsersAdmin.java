@@ -18,6 +18,8 @@ public class FragmentUsersAdmin extends Fragment {
         View view = inflater.inflate(R.layout.fragment_users_admin,container,false);
         Button bookReqFromUsers = view.findViewById(R.id.booksReqUsersID);
         Button bookRecdUsers = view.findViewById(R.id.booksRecievedUsersID);
+        Button viewAllUsers = view.findViewById(R.id.viewAllUsersID);
+
         bookReqFromUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +38,17 @@ public class FragmentUsersAdmin extends Fragment {
                 assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container_admin_1,viewReqRes,"Received BooksAdmin");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        viewAllUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentViewAllUsers viewAllUsers1 = new FragmentViewAllUsers();
+                assert getFragmentManager() != null;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container_admin_1,viewAllUsers1);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -1,6 +1,7 @@
-package android.com.mohan;
+package android.com.mohan.Modules.AuthenticationModule;
 
 import android.app.Activity;
+import android.com.mohan.R;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;

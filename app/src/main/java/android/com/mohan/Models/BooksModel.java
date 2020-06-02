@@ -1,11 +1,11 @@
-package android.com.mohan;
+package android.com.mohan.Models;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
 
 @IgnoreExtraProperties
-class BooksModel implements Serializable {
+public class BooksModel implements Serializable {
     private String bookname;
     private String bookabbr;
     private String bookauthor;
@@ -14,30 +14,30 @@ class BooksModel implements Serializable {
     private int bookcopies;
     private String imageurl;
 
-    String getImageurl() {
+    public String getImageurl() {
         return imageurl;
     }
 
-    void setImageurl(String imageurl) {
+    public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
     }
 
-    BooksModel() {
+    public BooksModel() {
     }
 
 
-    BooksModel(String bookname, String bookauthor, String imageurl) {
+    public BooksModel(String bookname, String bookauthor, String imageurl) {
         this.bookname = bookname;
         this.bookauthor = bookauthor;
         this.imageurl = imageurl;
     }
 
 
-    int getBookcopies() {
+    public int getBookcopies() {
         return bookcopies;
     }
 
-    void setBookcopies(Integer bookcopies) {
+    public void setBookcopies(Integer bookcopies) {
         this.bookcopies = bookcopies;
     }
 
@@ -45,35 +45,35 @@ class BooksModel implements Serializable {
         return bookisbncode;
     }
 
-    String getBookedition() {
+    public String getBookedition() {
         return bookedition;
     }
 
-    void setBookedition(String bookedition) {
+    public void setBookedition(String bookedition) {
         this.bookedition = bookedition;
     }
 
-    String getBookauthor() {
+    public String getBookauthor() {
         return bookauthor;
     }
 
-    void setBookauthor(String bookauthor) {
+    public void setBookauthor(String bookauthor) {
         this.bookauthor = bookauthor;
     }
 
-    String getBookabbr() {
+    public String getBookabbr() {
         return bookabbr;
     }
 
-    void setBookabbr(String bookabbr) {
+    public void setBookabbr(String bookabbr) {
         this.bookabbr = bookabbr;
     }
 
-    String getBookname() {
+    public String getBookname() {
         return bookname;
     }
 
-    void setBookname(String bookname) {
+    public void setBookname(String bookname) {
         this.bookname = bookname;
     }
 }

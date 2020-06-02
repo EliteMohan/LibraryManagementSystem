@@ -1,5 +1,6 @@
-package android.com.mohan;
+package android.com.mohan.Modules.AuthenticationModule;
 
+import android.com.mohan.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -116,6 +117,7 @@ public class FragmentSignup extends Fragment {
                     getConfirmPass.setError("Password not matching");
                     Toast.makeText(getActivity(), "Password not matching", Toast.LENGTH_SHORT).show();
                 } else {
+
                     progressBar.setVisibility(View.VISIBLE);
                     //method to signup/create/register new user
                     firebaseAuth.createUserWithEmailAndPassword(Email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

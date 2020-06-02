@@ -31,5 +31,14 @@
             android:layout_marginTop="20dp"
             android:textColor="@android:color/black" />
 
+        <Button
+            android:id="@+id/viewAllUsersID"
+            android:text="@string/view_all_users"
+            style="@style/loginButton"
+            android:layout_width="280dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/black" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

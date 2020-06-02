@@ -26,19 +26,15 @@ import java.util.Objects;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
-    private TextView headerUsername,headerRollNo;
+    private TextView headerUsername, headerRollNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
-            super.onCreate(savedInstanceState);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         MaterialToolbar materialToolbar = findViewById(R.id.toolbar_user);
         setSupportActionBar(materialToolbar);
-        materialToolbar.setTitleTextAppearance(getApplicationContext(),R.style.Toolbar_TitleText);
+        materialToolbar.setTitleTextAppearance(getApplicationContext(), R.style.Toolbar_TitleText);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();//FirebaseAuth Instance
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();//Firebase Firestore Instance
 
@@ -51,11 +47,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout = findViewById(R.id.user_drawer_layout); // capture drawer layout
         navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, materialToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentLibraryUsers()).commit();
             navigationView.setCheckedItem(R.id.nav_library_books);
         }
@@ -70,32 +66,32 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     headerUsername.setText(documentSnapshot.getString("username"));
                     headerRollNo.setText(Objects.requireNonNull(documentSnapshot.getString("rollno")).toUpperCase());
-                }catch (NullPointerException n){
+                } catch (NullPointerException n) {
                     Log.d("Error", Objects.requireNonNull(n.getMessage()));
                 }
-                }
+            }
         });
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_account:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentAccount()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentAccount()).commit();
                 break;
             case R.id.nav_library_books:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentLibraryUsers()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentLibraryUsers()).commit();
                 break;
             case R.id.nav_my_books:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentMyBooksUsers()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentMyBooksUsers()).commit();
                 break;
             case R.id.nav_settings:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentSettingsUsers()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentSettingsUsers()).commit();
                 break;
         }
 
@@ -105,9 +101,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
