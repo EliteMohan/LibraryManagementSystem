@@ -124,5 +124,6 @@
     <string name="by_ece_students">By ECE Students</string>
     <string name="choose">Choose</string>
     <string name="book_image_name">Book Image Name</string>
+    <string name="search_users">Search Users</string>
 
 </resources>

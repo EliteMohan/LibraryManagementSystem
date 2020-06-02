@@ -1,6 +1,5 @@
 package android.com.mohan;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.net.URL;
 import java.util.Objects;
 
 public class FragmentAboutUsPage extends Fragment {

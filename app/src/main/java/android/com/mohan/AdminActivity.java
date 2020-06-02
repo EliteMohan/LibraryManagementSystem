@@ -27,19 +27,17 @@ import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
-    private TextView headerUsername,headerRollNo;
+    private TextView headerUsername, headerRollNo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
-            super.onCreate(savedInstanceState);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         MaterialToolbar materialToolbar = findViewById(R.id.toolbar_admin);
 
         setSupportActionBar(materialToolbar);
-        materialToolbar.setTitleTextAppearance(getApplicationContext(),R.style.Toolbar_TitleText);
+        materialToolbar.setTitleTextAppearance(getApplicationContext(), R.style.Toolbar_TitleText);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();//FirebaseAuth Instance
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();//Firebase Firestore Instance
 
@@ -50,11 +48,11 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         headerRollNo = headerview.findViewById(R.id.rollNoHeader);
         drawerLayout = findViewById(R.id.admin_drawer_layout); // capture drawer layout
         navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, materialToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new FragmentLibraryAdmin()).commit();
             navigationView.setCheckedItem(R.id.nav_library_books_admin);
         }
@@ -86,22 +84,23 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_account_admin:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentAccount()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new FragmentAccount()).commit();
                 break;
             case R.id.nav_library_books_admin:
+                FragmentLibraryAdmin libraryAdmin = new FragmentLibraryAdmin();
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentLibraryAdmin()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, libraryAdmin).commit();
                 break;
             case R.id.nav_users_admin:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentUsersAdmin()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new FragmentUsersAdmin()).commit();
                 break;
             case R.id.nav_settings_admin:
                 getSupportFragmentManager().popBackStack();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin,new FragmentSettings()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new FragmentSettings()).commit();
                 break;
         }
 
@@ -113,9 +112,9 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onBackPressed() {
 
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

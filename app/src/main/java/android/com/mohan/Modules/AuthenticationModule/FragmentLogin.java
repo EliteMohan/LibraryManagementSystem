@@ -1,6 +1,9 @@
-package android.com.mohan;
+package android.com.mohan.Modules.AuthenticationModule;
 
 import android.app.Activity;
+import android.com.mohan.AdminActivity;
+import android.com.mohan.R;
+import android.com.mohan.UserActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,17 +43,18 @@ public class FragmentLogin extends Fragment {
     private AppCompatEditText email, password;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private String userID, adminID;
-    private Map<String,Object> User;
+    private String userID;
+    private Map<String, Object> User;
     private SharedPreferences sharedPref;
     private ContentLoadingProgressBar progressBar;
+    private String ADMINCODE;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_login, container, false);
 
-        sharedPref = Objects.requireNonNull(this.getActivity()).getSharedPreferences("pref",Context.MODE_PRIVATE);
+        sharedPref = Objects.requireNonNull(this.getActivity()).getSharedPreferences("pref", Context.MODE_PRIVATE);
         //textviews
         TextView linkToSignUp = view.findViewById(R.id.linkToSignupID);
         TextView forgot_pass = view.findViewById(R.id.ForgotPassButton);
@@ -65,17 +69,20 @@ public class FragmentLogin extends Fragment {
         //progress bar
         progressBar = view.findViewById(R.id.progressBarSend);
         progressBar.setVisibility(View.GONE);
+
+        try {
+            ADMINCODE = getTag();
+        } catch (NullPointerException e) {
+            Log.d("Error", "No ID got from authentication activity");
+        }
         //check user logged in or not
-        if (firebaseAuth.getCurrentUser() != null) {
-            if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
-                if (adminID.equals("OAb5ZYnZVnPeL6KP3MsFLf9ch7j2")) {
-                    startActivity(new Intent(getActivity(), AdminActivity.class));
-                    Objects.requireNonNull(getActivity()).finish();
-                } else {
-                    startActivity(new Intent(getActivity(), UserActivity.class));
-                    Objects.requireNonNull(getActivity()).finish();
-                }
+        if (ADMINCODE != null) {
+            if (ADMINCODE.equals("1")) {
+                startActivity(new Intent(getActivity(), AdminActivity.class));
+                Objects.requireNonNull(getActivity()).finish();
+            } else {
+                startActivity(new Intent(getActivity(), UserActivity.class));
+                Objects.requireNonNull(getActivity()).finish();
             }
         }
 
@@ -126,7 +133,7 @@ public class FragmentLogin extends Fragment {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         progressBar.setVisibility(View.GONE);
-                                        if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                                        if (Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()) {
                                             userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting current userID required to create user profile
                                             //Creating and Storing data as key/value pairs
                                             User = new HashMap<>();
@@ -136,6 +143,7 @@ public class FragmentLogin extends Fragment {
                                             User.put("rollno", sharedPref.getString("rollno", "no rollno found"));
                                             User.put("gender", sharedPref.getString("gender", "not found"));
                                             User.put("college", sharedPref.getString("college", "not found"));
+                                            User.put("ADMINCODE", "0");
                                             //creating collection(database) users with document(tables) userID if doesnt exists
                                             final DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
                                             try {
@@ -147,13 +155,9 @@ public class FragmentLogin extends Fragment {
                                                             assert doc != null;
                                                             if (doc.exists()) {
                                                                 Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                                                try {
-                                                                    adminID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();//getting adminID to log into admin profile
-                                                                } catch (NullPointerException n) {
-                                                                    Log.d("Error:", Objects.requireNonNull(n.getMessage()));
-                                                                }
-//                                                                Log.d("Admin ID: ",adminID);
-                                                                if (adminID.equals("OAb5ZYnZVnPeL6KP3MsFLf9ch7j2")) {
+                                                                String ADMINCODE = doc.getString("ADMINCODE");
+                                                                assert ADMINCODE != null;
+                                                                if (ADMINCODE.equals("1")) {
                                                                     startActivity(new Intent(getActivity(), AdminActivity.class));
                                                                     Objects.requireNonNull(getActivity()).finish();
                                                                 } else {
@@ -163,20 +167,16 @@ public class FragmentLogin extends Fragment {
                                                             } else {
                                                                 //success and failure listeners
                                                                 //adds user data
+                                                                //new account login
                                                                 try {
                                                                     documentReference.set(User).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                         @Override
                                                                         public void onSuccess(Void aVoid) {
                                                                             Log.d("userInfo", "User data Successfully added to user ".concat(userID));
                                                                             Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                                                            adminID = firebaseAuth.getCurrentUser().getUid();//getting adminID to log into admin profile
-                                                                            if (adminID.equals("aqXctFlLaKbQXzTVo08gchQ1E8I3")) {
-                                                                                startActivity(new Intent(getActivity(), AdminActivity.class));
-                                                                                Objects.requireNonNull(getActivity()).finish();
-                                                                            } else {
-                                                                                startActivity(new Intent(getActivity(), UserActivity.class));
-                                                                                Objects.requireNonNull(getActivity()).finish();
-                                                                            }
+                                                                            // any new user must login once to become admin
+                                                                            startActivity(new Intent(getActivity(), UserActivity.class));
+                                                                            Objects.requireNonNull(getActivity()).finish();
                                                                         }
                                                                     }).addOnFailureListener(new OnFailureListener() {
                                                                         @Override

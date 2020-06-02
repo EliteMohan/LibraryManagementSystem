@@ -5,78 +5,77 @@
     <LinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="@dimen/_12sdp">
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/add_book_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/add_book_dialog"
                 android:text="@string/book_name"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/book_avail_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/book_avail_dialog"
                 android:text="@string/copies"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/book_abbrev_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/book_abbrev_dialog"
                 android:text="@string/abbreviation"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/book_author_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/book_author_dialog"
                 android:text="@string/author"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/book_edition_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/book_edition_dialog"
                 android:text="@string/edition"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/_37sdp"
             android:id="@+id/book_isbn_dialog_in">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/_37sdp"
                 android:id="@+id/book_isbn_dialog"
                 android:text="@string/isbn_code"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
 

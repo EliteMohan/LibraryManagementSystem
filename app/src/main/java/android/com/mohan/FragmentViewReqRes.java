@@ -1,6 +1,7 @@
 package android.com.mohan;
 
 import android.app.Activity;
+import android.com.mohan.Models.BookReqRecModel;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class FragmentViewReqRes extends Fragment implements ViewReqResDialog.onA
     private ReqResListAdapter reqResListAdapter;
     private FirebaseFirestore firebaseFirestore;
     private AppCompatEditText searchField;
-    private Query query;
+    private Query query,query1;
     private RecyclerView recyclerView;
 
     @Nullable
@@ -71,9 +72,10 @@ public class FragmentViewReqRes extends Fragment implements ViewReqResDialog.onA
         recyclerView.setLayoutManager(manager);
         firebaseFirestore = FirebaseFirestore.getInstance();
         query = firebaseFirestore.collection("REQREC").limit(10);
+        query1 = firebaseFirestore.collection("REQREC").limit(10);
         if (tag.equals("Return Dates")) {
             FirestoreRecyclerOptions<BookReqRecModel> options = new FirestoreRecyclerOptions.Builder<BookReqRecModel>()
-                    .setQuery(query, new SnapshotParser<BookReqRecModel>() {
+                    .setQuery(query1, new SnapshotParser<BookReqRecModel>() {
                         @NonNull
                         @Override
                         public BookReqRecModel parseSnapshot(@NonNull DocumentSnapshot snapshot) {
@@ -120,8 +122,13 @@ public class FragmentViewReqRes extends Fragment implements ViewReqResDialog.onA
                         .startAt(str.toUpperCase())
                         .endAt(str.toUpperCase() + "\uf8ff").limit(10);
                 if(tag.equals("Return Dates")){
+                    query1 = firebaseFirestore.collection("REQREC")
+                            .orderBy("Bookname", Query.Direction.ASCENDING)
+                            .startAt(str.toUpperCase())
+                            .endAt(str.toUpperCase() + "\uf8ff").limit(10);
+
                     FirestoreRecyclerOptions<BookReqRecModel> options = new FirestoreRecyclerOptions.Builder<BookReqRecModel>()
-                            .setQuery(query, new SnapshotParser<BookReqRecModel>() {
+                            .setQuery(query1, new SnapshotParser<BookReqRecModel>() {
                                 @NonNull
                                 @Override
                                 public BookReqRecModel parseSnapshot(@NonNull DocumentSnapshot snapshot) {

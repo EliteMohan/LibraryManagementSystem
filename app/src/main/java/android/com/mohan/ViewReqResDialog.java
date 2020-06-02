@@ -27,7 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
+import android.com.mohan.Models.BookReqRecModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,7 +78,7 @@ public class ViewReqResDialog extends DialogFragment {
         String reqdate = "Requested Date: ";
         String retdate = "Return Dates: ";
         assert getTag() != null;
-        Log.d("Date",getTag());
+        Log.d("Date", getTag());
         switch (tag) {
             case "Return Dates":
                 //Works Perfectly
@@ -132,7 +132,7 @@ public class ViewReqResDialog extends DialogFragment {
                                                                     DocumentSnapshot doc = task.getResult();
                                                                     assert doc != null;
                                                                     if (doc.exists()) {
-                                                                        Log.d("Book Copies & Abbr", Objects.requireNonNull(doc.getLong("Copies")).intValue() +" "+abbr);
+                                                                        Log.d("Book Copies & Abbr", Objects.requireNonNull(doc.getLong("Copies")).intValue() + " " + abbr);
                                                                         firebaseFirestore.collection("Books")
                                                                                 .document(abbr)
                                                                                 .update("Copies", Objects.requireNonNull(doc.getLong("Copies")).intValue() + 1)
@@ -353,10 +353,10 @@ public class ViewReqResDialog extends DialogFragment {
                         bookedition.setText(edition);
 
                         String reqrec = reqdate + doc.getString("Bookreqrecdate");
-                        if(tag.equals("Return Dates")){
+                        if (tag.equals("Return Dates")) {
                             assert getTag() != null;
                             reqresdate.setText(getTag().trim());
-                        }else {
+                        } else {
                             reqresdate.setText(reqrec);
                         }
 

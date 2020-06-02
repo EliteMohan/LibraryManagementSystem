@@ -1,11 +1,11 @@
-package android.com.mohan;
+package android.com.mohan.Models;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
 
 @IgnoreExtraProperties
-class BookReqRecModel implements Serializable {
+public class BookReqRecModel implements Serializable {
     private String bookname;
     private String bookauthor;
     private String bookedition;
@@ -18,7 +18,14 @@ class BookReqRecModel implements Serializable {
     private String retdate;
     private String imageurl;
 
-    String getImageurl() {
+    public BookReqRecModel(String rollno, String bookname, String recCode, String imageurl) {
+        this.rollno = rollno;
+        this.bookname = bookname;
+        this.reccode = recCode;
+        this.imageurl = imageurl;
+    }
+
+    public String getImageurl() {
         return imageurl;
     }
 
@@ -26,21 +33,14 @@ class BookReqRecModel implements Serializable {
         this.imageurl = imageurl;
     }
 
-    BookReqRecModel(String rollno, String bookname, String reccode,String imageurl) {
-        this.rollno = rollno.toUpperCase();
-        this.bookname = bookname;
-        this.reccode = reccode;
-        this.imageurl = imageurl;
-    }
 
-
-    BookReqRecModel(String retDate, String bookname,String imageurl) {
+    public BookReqRecModel(String retDate, String bookname, String imageurl) {
         this.retdate = retDate;
         this.bookname = bookname;
         this.imageurl = imageurl;
     }
 
-    String getRetdate() {
+    public String getRetdate() {
         return retdate;
     }
 
@@ -48,45 +48,46 @@ class BookReqRecModel implements Serializable {
         this.retdate = retdate;
     }
 
-    int getCopies() {
+    public int getCopies() {
         return copies;
     }
 
-    void setCopies(Integer copies) {
+    public void setCopies(Integer copies) {
         this.copies = copies;
     }
 
-    BookReqRecModel(){}
+    public BookReqRecModel() {
+    }
 
-    String getBookabbr() {
+    public String getBookabbr() {
         return bookabbr;
     }
 
-    void setBookabbr(String bookabbr) {
+    public void setBookabbr(String bookabbr) {
         this.bookabbr = bookabbr;
     }
 
-    String getBookname() {
+    public String getBookname() {
         return bookname;
     }
 
-    void setBookname(String bookname) {
+    public void setBookname(String bookname) {
         this.bookname = bookname;
     }
 
-    String getBookauthor() {
+    public String getBookauthor() {
         return bookauthor;
     }
 
-    void setBookauthor(String bookauthor) {
+    public void setBookauthor(String bookauthor) {
         this.bookauthor = bookauthor;
     }
 
-    String getBookedition() {
+    public String getBookedition() {
         return bookedition;
     }
 
-    void setBookedition(String bookedition) {
+    public void setBookedition(String bookedition) {
         this.bookedition = bookedition;
     }
 
@@ -94,23 +95,23 @@ class BookReqRecModel implements Serializable {
         this.bookreqrecdate = bookreqrecdate;
     }
 
-    String getReccode() {
+    public String getReccode() {
         return reccode;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    String getRollno() {
+    public String getRollno() {
         return rollno;
     }
 
-    void setRollno(String rollno) {
+    public void setRollno(String rollno) {
         this.rollno = rollno;
     }
 
